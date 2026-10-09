@@ -67,4 +67,4 @@ Windows 部署使用 `windeployqt --release --no-translations`，同时扫描应
 
 官方原版保留在 `3.17.2` 标签。中文开发基于该提交，不自动合并上游后续版本。
 官方同名分支用于同步上游，中文默认分支单独维护。
-完整上游说明见 [README.md](README.md)。
+完整上游说明见 [README.upstream.md](README.upstream.md)。

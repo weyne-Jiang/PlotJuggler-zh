@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+  <DisplayName>PlotJuggler 3.17.2 中文版</DisplayName>
+  <Description>包含简体中文界面、18 个内置插件和离线运行所需依赖。</Description>
+  <Version>3.17.2.1</Version>
+  <ReleaseDate>2026-10-09</ReleaseDate>
+  <Default>true</Default>
+  <Script>installscript.qs</Script>
+  <Licenses>
+    <License name="Mozilla Public License 2.0" file="license_mpl.txt" />
+    <License name="GNU Lesser General Public License 3.0" file="license_lgpl.txt" />
+  </Licenses>
+</Package>

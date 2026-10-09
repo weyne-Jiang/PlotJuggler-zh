@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+  <Name>PlotJuggler 3.17.2 中文版</Name>
+  <Version>3.17.2.1</Version>
+  <Title>PlotJuggler 3.17.2 中文版安装程序</Title>
+  <Publisher>weyne-Jiang</Publisher>
+  <StartMenuDir>PlotJuggler 3.17.2 中文版</StartMenuDir>
+  <TargetDir>@LocalAppData@/PlotJuggler-3.17.2-zh</TargetDir>
+  <MaintenanceToolName>maintenancetool</MaintenanceToolName>
+  <RunProgram>@TargetDir@/plotjuggler.exe</RunProgram>
+</Installer>

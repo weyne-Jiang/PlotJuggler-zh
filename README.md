@@ -1,162 +1,57 @@
-# ALERT: do NOT visit plotjuggler.com
-## That is probably a Malware / Phishing page impersonating us.
-We are taking urgent actions to brint it down.
+# PlotJuggler 3.17.2 中文版
 
+基于官方 **3.17.2**，支持 **跟随系统 / English / 简体中文**，语言设置保存后重启生效。
+本仓库的默认开发分支为 `main-3.17.2-zh`；`main`、`main-4.x` 等官方同名分支保持与上游一致。
 
 ![PlotJuggler](docs/plotjuggler3_banner.svg)
 
-[![windows](https://github.com/PlotJuggler/PlotJuggler/actions/workflows/windows.yaml/badge.svg)](https://github.com/PlotJuggler/PlotJuggler/actions/workflows/windows.yaml)
-[![ubuntu](https://github.com/PlotJuggler/PlotJuggler/actions/workflows/ubuntu.yaml/badge.svg)](https://github.com/PlotJuggler/PlotJuggler/actions/workflows/ubuntu.yaml)
-[![macos](https://github.com/PlotJuggler/PlotJuggler/actions/workflows/macos.yaml/badge.svg)](https://github.com/PlotJuggler/PlotJuggler/actions/workflows/macos.yaml)
-[![ros2-humble](https://github.com/PlotJuggler/PlotJuggler/actions/workflows/ros2-humble.yaml/badge.svg)](https://github.com/PlotJuggler/PlotJuggler/actions/workflows/ros2-humble.yaml)
-[![ros2-jazzy](https://github.com/PlotJuggler/PlotJuggler/actions/workflows/ros2-jazzy.yaml/badge.svg)](https://github.com/PlotJuggler/PlotJuggler/actions/workflows/ros2-jazzy.yaml)
-[![ros2-rolling](https://github.com/PlotJuggler/PlotJuggler/actions/workflows/ros2-rolling.yaml/badge.svg)](https://github.com/PlotJuggler/PlotJuggler/actions/workflows/ros2-rolling.yaml)
-[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=I%20use%20PlotJuggler%20and%20it%20is%20amazing%0D%0A&url=https://github.com/PlotJuggler/PlotJuggler&via=facontidavide&hashtags=dataviz,plotjuggler,GoROS,PX4)
+## 下载和安装
 
-## Gold Sponsor:
-[![Greenzie](docs/sponsor_greenzie.png)](https://www.greenzie.com/)
-[![Intermodalics](docs/sponsor_intermodalics.png)](https://www.intermodalics.ai/)
-[![Greenzie](docs/sponsor_ark.png)](https://arkelectron.com/)
+前往 [Releases](https://github.com/weyne-Jiang/PlotJuggler-zh/releases) 下载
+`PlotJuggler-3.17.2-zh.1-Windows-x64.exe`。
+首版为 Windows x64 离线预发布安装包，安装后无需另外安装 Qt 或 Python。
+安装包及其 SHA256 校验文件一起提供。
 
-# PlotJuggler 3.17
+默认安装目录：`%LOCALAPPDATA%/PlotJuggler-3.17.2-zh`。
+开始菜单和桌面快捷方式名称为“PlotJuggler 3.17.2 中文版”。
+卸载使用安装目录下的 `maintenancetool.exe`。
 
-PlotJuggler is a tool to visualize time series that is **fast**, **powerful** and  **intuitive**.
+启动后，在 **首选项 → 外观 → 语言** 中选择：
 
-Noteworthy features:
+- **跟随系统**：简体中文系统使用中文，其他系统使用英文。
+- **English**：始终使用英文。
+- **简体中文**：始终使用中文。
 
-- Simple Drag & Drop user interface.
-- Load __data from file__.
-- Connect to live __streaming__ of data.
-- Save the visualization layout and configurations to reuse them later.
-- Fast **OpenGL** visualization.
-- Can handle **thousands** of timeseries and **millions** of data points.
-- Transform your data using a simple editor: derivative, moving average, integral, etc…
-- PlotJuggler can be easily extended using __plugins__.
+点击“确定”保存，然后重新启动；点击“取消”不保存。
+中文词库内嵌在程序中，不需要下载外置汉化补丁。
 
-![PlotJuggler](docs/plotjuggler3.gif)
+## 功能和验证
 
+- 1029 条中文词条，覆盖主界面、菜单、首选项、绘图、内置对话框和仓库内插件界面。
+- 用户数据、曲线名、路径、协议及代码示例保持原样。
+- 76 项自动化测试通过；首选项在明暗主题及实际 100%/150% DPI 下通过验证。
+- 真实 ULog 在英文和中文模式下读取结果一致，2680 条数值曲线、438903 个数据点。
+- Windows 包包含 18 个内置插件，包括 CSV、MCAP、ULog、SerialPort、WebSocket、FFT 和 Lua。
 
-## Data sources (file and streaming)
+## 首版范围
 
-- Load CSV files.
-- Load [ULog](https://docs.px4.io/main/en/dev_log/ulog_file_format) (PX4).
-- Subscribe to many different streaming sources: MQTT, WebSockets, ZeroMQ, UDP, etc.
-- Understand data formats such as JSON, CBOR, BSON, Message Pack, etc.
-- Well integrated with [ROS](https://www.ros.org/): open *rosbags* and/or subscribe to ROS *topics* (both ROS1 and ROS2).
-- Supports the [Lab Streaming Layer](https://labstreaminglayer.readthedocs.io/info/intro.html), that is used by [many devices](https://labstreaminglayer.readthedocs.io/info/supported_devices.html).
-- Easily add your custom data source and/or formats...
+本安装包主要验证离线 CSV/ULog 和中文界面。缺少匹配的 OpenSSL 运行库，
+HTTPS/WSS 尚不可用。Parquet、MQTT、ZMQ、QtAV VideoViewer、Mosaico、Protobuf、
+Zcm 等可选插件未构建；ROS1/ROS2 消息解析插件可用，但未附带 ROS 运行环境。
+第三方插件需要自行提供翻译。详细限制见 [验证记录](VALIDATION.zh-CN.md)。
 
-![](docs/data_sources.svg)
+## 开发与维护
 
-## Transform and analyze your data
-PlotJuggler makes it easy to visualize data but also to analyze it.
-You can manipulate your time series using a simple and extendable Transform Editor.
+- [中文使用、实现原理与构建说明](README.zh-CN.md)
+- [翻译维护规范](translations/README.md) · [术语表](translations/glossary.md)
+- [验证记录](VALIDATION.zh-CN.md)
+- [官方原版项目说明](README.upstream.md)
+- [官方项目](https://github.com/PlotJuggler/PlotJuggler)
 
-![](docs/function_editor.png)
+中文分支基线为官方 `3.17.2`（`034a5cc`）；后续中文改进在 `main-3.17.2-zh` 开发。
+上游说明中的功能和下载链接属于官方项目，中文安装包以本仓库 Release 为准。
 
-Alternatively, you may use the Custom Function Editor, which allows you to create Multi-input / Single-output functions
-using a scripting language based on [Lua](https://www.tutorialspoint.com/lua/index.htm).
+## 许可证
 
-If you are not familiar with Lua, don't be afraid, you won't need more than 5 minutes to learn it ;)
-
-![](docs/custom_editor.png)
-
-## Tutorials
-
-To learn how to use PlotJuggler, check the tutorials here:
-
-| Tutorial 1   |  Tutorial 2 | Tutorial 3 |
-:-------------------------:|:-------------------------:|:-------------------------:
-| [![](docs/tutorial_1.png)](https://slides.com/davidefaconti/introduction-to-plotjuggler) | [![](docs/tutorial_2.png)](https://slides.com/davidefaconti/plotjuggler-data) | [![](docs/tutorial_3.png)](https://slides.com/davidefaconti/plotjuggler-transforms) |
-
-## Supported plugins
-
-Some plugins can be found in a different repository. The individual README files
-*should* include all the information needed to compile and use the plugin.
-
-Please submit specific issues, Pull Requests and questions on the related Github repository:
-
-- [MQTT DataStreamer](https://github.com/PlotJuggler/plotjuggler-mqtt).
-- [Lab Streaming Layer DataStreamer](https://github.com/PlotJuggler/plotjuggler-lsl).
-- [ROS plugins](https://github.com/PlotJuggler/plotjuggler-ros-plugins).
-- [CAN .dbg DataLoader](https://github.com/PlotJuggler/plotjuggler-CAN-dbs).
-
-If you want a simple example to learn how to write your own plugins, have a look at
-[PlotJuggler/plotjuggler-sample-plugins](https://github.com/PlotJuggler/plotjuggler-sample-plugins)
-
-# Installation
-
-You can download the latest ready to use binaries from the [Release page](https://github.com/PlotJuggler/PlotJuggler/releases).
-
-<div align="center">
-
-| 🐧 Linux | 🍎 macOS | 🪟 Windows | 📦 Debian |
-|:--------:|:--------:|:----------:|:---------:|
-| **AppImage** | **Installer** | **Installer** | **Packages** |
-| x86 / arm64 | x86 / arm64 | x64 | bookworm, trixie |
-
-</div>
-
-## Snap (recommended in Ubuntu, to ROS users too)
-
-The snap contains a version of PlotJuggler that works (with some limitations) with ROS2.
-
-![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)
-
-To install it in Ubuntu, run:
-
-```
-sudo snap install plotjuggler
-```
-
-### Debian packages for ROS User
-
-Install the ROS packages with:
-
-```
-sudo apt install ros-$ROS_DISTRO-plotjuggler-ros
-```
-To launch PlotJuggler, use the command:
-
-```
-ros2 run plotjuggler plotjuggler
-```
-
-ROS plugins are available in a separate repository: https://github.com/PlotJuggler/plotjuggler-ros-plugins
-
-Please take a look at the instructions in that repository if you want to compile PJ and its ROS plugins from source.
-
-
-## Compile from source
-
-You can find the detailed instructions here: [COMPILE.md](COMPILE.md).
-
-# Sponsorship and commercial support
-
-PlotJuggler required a lot of work to develop and maintain; my goal is to build the most
-intuitive and powerful tool to visualize data and timeseries.
-
-If you find PlotJuggler useful, consider donating [PayPal](https://www.paypal.me/facontidavide) or becoming a
-[Github Sponsor](https://github.com/sponsors/facontidavide).
-
-If you need to extend any of the functionalities of PlotJuggler to cover a specific
-need or to parse your custom data formats, you can receive commercial
-support from the main author, [Davide Faconti](mailto:davide.faconti@gmail.com).
-
-# License
-
-PlotJuggler is released under the [Mozilla Public License Version 2.0](LICENSE.md),
-which allows users to develop closed-source plugins.
-
-Please note that some third-party dependencies (including Qt) use the
-**GNU Lesser General Public License**.
-
-# Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=PlotJuggler/PlotJuggler&type=Date)](https://star-history.com/#PlotJuggler/PlotJuggler&Date)
-
-# Contributors
-
-<a href="https://github.com/PlotJuggler/PlotJuggler/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=PlotJuggler/PlotJuggler" />
-</a>
+应用和中文翻译采用 [MPL-2.0](LICENSE.md)。Qt、Python、Wasmer 等依赖的许可证
+随安装包提供；上游贡献者、致谢和赞助信息保留在 [官方原版说明](README.upstream.md)。
