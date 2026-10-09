@@ -8,7 +8,7 @@
 ## 下载和安装
 
 前往 [Releases](https://github.com/weyne-Jiang/PlotJuggler-zh/releases) 下载
-`PlotJuggler-3.17.2-zh.1-Windows-x64.exe`。
+`PlotJuggler-3.17.2-zh.2-Windows-x64.exe`。
 首版为 Windows x64 离线预发布安装包，安装后无需另外安装 Qt 或 Python。
 安装包及其 SHA256 校验文件一起提供。
 

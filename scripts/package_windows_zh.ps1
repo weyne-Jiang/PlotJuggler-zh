@@ -3,7 +3,7 @@ param(
     [Parameter(Mandatory = $true)][string]$BinaryDirectory,
     [Parameter(Mandatory = $true)][string]$BinaryCreator,
     [string]$OutputDirectory,
-    [string]$Version = '3.17.2-zh.1'
+    [string]$Version = '3.17.2-zh.2'
 )
 $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path $PSScriptRoot -Parent
