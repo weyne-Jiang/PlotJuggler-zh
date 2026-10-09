@@ -1,4 +1,5 @@
 #include "video_dialog.h"
+#include <QCoreApplication>
 #include <QFileDialog>
 #include <QDir>
 #include <QFileInfo>
@@ -66,7 +67,7 @@ VideoDialog::VideoDialog(QWidget* parent) : QDialog(parent), ui(new Ui::VideoDia
 
   if (!_video_output->widget())
   {
-    QMessageBox::warning(this, QString::fromLatin1("QtAV error"),
+    QMessageBox::warning(this, QCoreApplication::translate("VideoDialog", "QtAV error"),
                          tr("Can not create video renderer"));
     return;
   }
@@ -159,7 +160,7 @@ void VideoDialog::updateSlider()
   if (_media_player->isSeekable() == false || duration_ms == 0)
   {
     QMessageBox msgBox(this);
-    msgBox.setWindowTitle("Video is not seekable");
+    msgBox.setWindowTitle(QCoreApplication::translate("VideoDialog", "Video is not seekable"));
     msgBox.setText(tr("Video is not seekable. You will need to decode the video into "
                       "individual frames.\n"));
     msgBox.addButton(QMessageBox::Cancel);
@@ -295,8 +296,8 @@ void VideoDialog::on_decodeButton_clicked()
 
   double fps = _media_player->statistics().video.frame_rate;
   QProgressDialog progress_dialog;
-  progress_dialog.setWindowTitle("PlotJuggler Video");
-  progress_dialog.setLabelText("Decoding file");
+  progress_dialog.setWindowTitle(QCoreApplication::translate("VideoDialog", "PlotJuggler Video"));
+  progress_dialog.setLabelText(QCoreApplication::translate("VideoDialog", "Decoding file"));
   progress_dialog.setWindowModality(Qt::ApplicationModal);
   progress_dialog.setRange(0, _media_player->duration() * fps / 1000);
   progress_dialog.setAutoClose(true);

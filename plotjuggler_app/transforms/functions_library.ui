@@ -67,7 +67,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Ctrl+Click to select multiple</string>
+        <string notr="true">Ctrl+Click to select multiple</string>
        </property>
       </widget>
      </item>

@@ -45,7 +45,7 @@
           <item row="0" column="1">
            <widget class="QDateTimeEdit" name="exampleDateTimeDateTimeEdit">
             <property name="displayFormat">
-             <string>M/d/yyyy h:mm:ss.zzz AP</string>
+             <string notr="true">M/d/yyyy h:mm:ss.zzz AP</string>
             </property>
             <property name="calendarPopup">
              <bool>false</bool>
@@ -62,7 +62,7 @@
           <item row="1" column="1">
            <widget class="QLineEdit" name="exampleFormatStringLineEdit">
             <property name="text">
-             <string>d-MM-yyyy h:mm:ss</string>
+             <string notr="true">d-MM-yyyy h:mm:ss</string>
             </property>
            </widget>
           </item>
@@ -181,52 +181,52 @@
                   </attribute>
                   <row>
                    <property name="text">
-                    <string>row1</string>
+                    <string notr="true">row1</string>
                    </property>
                   </row>
                   <row>
                    <property name="text">
-                    <string>row2</string>
+                    <string notr="true">row2</string>
                    </property>
                   </row>
                   <row>
                    <property name="text">
-                    <string>row3</string>
+                    <string notr="true">row3</string>
                    </property>
                   </row>
                   <row>
                    <property name="text">
-                    <string>row4</string>
+                    <string notr="true">row4</string>
                    </property>
                   </row>
                   <row>
                    <property name="text">
-                    <string>row5</string>
+                    <string notr="true">row5</string>
                    </property>
                   </row>
                   <row>
                    <property name="text">
-                    <string>row6</string>
+                    <string notr="true">row6</string>
                    </property>
                   </row>
                   <row>
                    <property name="text">
-                    <string>row7</string>
+                    <string notr="true">row7</string>
                    </property>
                   </row>
                   <row>
                    <property name="text">
-                    <string>row8</string>
+                    <string notr="true">row8</string>
                    </property>
                   </row>
                   <row>
                    <property name="text">
-                    <string>row9</string>
+                    <string notr="true">row9</string>
                    </property>
                   </row>
                   <row>
                    <property name="text">
-                    <string>row10</string>
+                    <string notr="true">row10</string>
                    </property>
                   </row>
                   <column>
@@ -241,7 +241,7 @@
                   </column>
                   <item row="0" column="0">
                    <property name="text">
-                    <string>d</string>
+                    <string notr="true">d</string>
                    </property>
                   </item>
                   <item row="0" column="1">
@@ -251,7 +251,7 @@
                   </item>
                   <item row="1" column="0">
                    <property name="text">
-                    <string>dd</string>
+                    <string notr="true">dd</string>
                    </property>
                   </item>
                   <item row="1" column="1">
@@ -261,7 +261,7 @@
                   </item>
                   <item row="2" column="0">
                    <property name="text">
-                    <string>ddd</string>
+                    <string notr="true">ddd</string>
                    </property>
                   </item>
                   <item row="2" column="1">
@@ -271,7 +271,7 @@
                   </item>
                   <item row="3" column="0">
                    <property name="text">
-                    <string>dddd</string>
+                    <string notr="true">dddd</string>
                    </property>
                   </item>
                   <item row="3" column="1">
@@ -281,7 +281,7 @@
                   </item>
                   <item row="4" column="0">
                    <property name="text">
-                    <string>M</string>
+                    <string notr="true">M</string>
                    </property>
                   </item>
                   <item row="4" column="1">
@@ -291,7 +291,7 @@
                   </item>
                   <item row="5" column="0">
                    <property name="text">
-                    <string>MM</string>
+                    <string notr="true">MM</string>
                    </property>
                   </item>
                   <item row="5" column="1">
@@ -301,7 +301,7 @@
                   </item>
                   <item row="6" column="0">
                    <property name="text">
-                    <string>MMM</string>
+                    <string notr="true">MMM</string>
                    </property>
                   </item>
                   <item row="6" column="1">
@@ -311,7 +311,7 @@
                   </item>
                   <item row="7" column="0">
                    <property name="text">
-                    <string>MMMM</string>
+                    <string notr="true">MMMM</string>
                    </property>
                   </item>
                   <item row="7" column="1">
@@ -321,7 +321,7 @@
                   </item>
                   <item row="8" column="0">
                    <property name="text">
-                    <string>yy</string>
+                    <string notr="true">yy</string>
                    </property>
                   </item>
                   <item row="8" column="1">
@@ -331,7 +331,7 @@
                   </item>
                   <item row="9" column="0">
                    <property name="text">
-                    <string>yyyy</string>
+                    <string notr="true">yyyy</string>
                    </property>
                   </item>
                   <item row="9" column="1">
@@ -381,62 +381,62 @@
                 </attribute>
                 <row>
                  <property name="text">
-                  <string>row1</string>
+                  <string notr="true">row1</string>
                  </property>
                 </row>
                 <row>
                  <property name="text">
-                  <string>row2</string>
+                  <string notr="true">row2</string>
                  </property>
                 </row>
                 <row>
                  <property name="text">
-                  <string>row3</string>
+                  <string notr="true">row3</string>
                  </property>
                 </row>
                 <row>
                  <property name="text">
-                  <string>row4</string>
+                  <string notr="true">row4</string>
                  </property>
                 </row>
                 <row>
                  <property name="text">
-                  <string>row5</string>
+                  <string notr="true">row5</string>
                  </property>
                 </row>
                 <row>
                  <property name="text">
-                  <string>row6</string>
+                  <string notr="true">row6</string>
                  </property>
                 </row>
                 <row>
                  <property name="text">
-                  <string>row7</string>
+                  <string notr="true">row7</string>
                  </property>
                 </row>
                 <row>
                  <property name="text">
-                  <string>row8</string>
+                  <string notr="true">row8</string>
                  </property>
                 </row>
                 <row>
                  <property name="text">
-                  <string>row9</string>
+                  <string notr="true">row9</string>
                  </property>
                 </row>
                 <row>
                  <property name="text">
-                  <string>row10</string>
+                  <string notr="true">row10</string>
                  </property>
                 </row>
                 <row>
                  <property name="text">
-                  <string>row11</string>
+                  <string notr="true">row11</string>
                  </property>
                 </row>
                 <row>
                  <property name="text">
-                  <string>row12</string>
+                  <string notr="true">row12</string>
                  </property>
                 </row>
                 <column>
@@ -451,7 +451,7 @@
                 </column>
                 <item row="0" column="0">
                  <property name="text">
-                  <string>h</string>
+                  <string notr="true">h</string>
                  </property>
                 </item>
                 <item row="0" column="1">
@@ -461,7 +461,7 @@
                 </item>
                 <item row="1" column="0">
                  <property name="text">
-                  <string>hh</string>
+                  <string notr="true">hh</string>
                  </property>
                 </item>
                 <item row="1" column="1">
@@ -471,7 +471,7 @@
                 </item>
                 <item row="2" column="0">
                  <property name="text">
-                  <string>H</string>
+                  <string notr="true">H</string>
                  </property>
                 </item>
                 <item row="2" column="1">
@@ -481,7 +481,7 @@
                 </item>
                 <item row="3" column="0">
                  <property name="text">
-                  <string>HH</string>
+                  <string notr="true">HH</string>
                  </property>
                 </item>
                 <item row="3" column="1">
@@ -491,7 +491,7 @@
                 </item>
                 <item row="4" column="0">
                  <property name="text">
-                  <string>m</string>
+                  <string notr="true">m</string>
                  </property>
                 </item>
                 <item row="4" column="1">
@@ -501,7 +501,7 @@
                 </item>
                 <item row="5" column="0">
                  <property name="text">
-                  <string>mm</string>
+                  <string notr="true">mm</string>
                  </property>
                 </item>
                 <item row="5" column="1">
@@ -511,7 +511,7 @@
                 </item>
                 <item row="6" column="0">
                  <property name="text">
-                  <string>s</string>
+                  <string notr="true">s</string>
                  </property>
                 </item>
                 <item row="6" column="1">
@@ -521,7 +521,7 @@
                 </item>
                 <item row="7" column="0">
                  <property name="text">
-                  <string>ss</string>
+                  <string notr="true">ss</string>
                  </property>
                 </item>
                 <item row="7" column="1">
@@ -531,7 +531,7 @@
                 </item>
                 <item row="8" column="0">
                  <property name="text">
-                  <string>z</string>
+                  <string notr="true">z</string>
                  </property>
                 </item>
                 <item row="8" column="1">
@@ -541,7 +541,7 @@
                 </item>
                 <item row="9" column="0">
                  <property name="text">
-                  <string>zzz</string>
+                  <string notr="true">zzz</string>
                  </property>
                 </item>
                 <item row="9" column="1">
@@ -551,7 +551,7 @@
                 </item>
                 <item row="10" column="0">
                  <property name="text">
-                  <string>AP or A</string>
+                  <string notr="true">AP or A</string>
                  </property>
                 </item>
                 <item row="10" column="1">
@@ -561,7 +561,7 @@
                 </item>
                 <item row="11" column="0">
                  <property name="text">
-                  <string>ap or a</string>
+                  <string notr="true">ap or a</string>
                  </property>
                 </item>
                 <item row="11" column="1">

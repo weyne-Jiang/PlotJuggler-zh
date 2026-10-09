@@ -1,6 +1,8 @@
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+add_subdirectory(translations)
+
 qt5_add_resources(RES_SRC resource.qrc)
 
 if(WIN32)
@@ -49,6 +51,7 @@ set(PLOTJUGGLER_SRC
     curvetree_view.cpp
     dummy_data.cpp
     main.cpp
+    language_manager.cpp
     mainwindow.cpp
     messageparser_base.cpp
     toast_notification.cpp
@@ -187,6 +190,7 @@ endif()
 target_link_libraries(
   plotjuggler
   PRIVATE ${QT_LINK_LIBRARIES}
+          plotjuggler_translations
           plotjuggler_base
           colorwidgets
           qt_advanced_docking
@@ -211,4 +215,8 @@ elseif(COMPILING_WITH_AMENT)
   install(TARGETS plotjuggler DESTINATION lib/${PROJECT_NAME})
 else()
   install(TARGETS plotjuggler DESTINATION bin)
+endif()
+
+if(ENABLE_LANGUAGE_TESTS)
+  add_subdirectory(tests)
 endif()

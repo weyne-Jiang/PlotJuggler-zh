@@ -8,6 +8,10 @@ project(
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+if(MSVC)
+  add_compile_options(/utf-8)
+endif()
+
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 # Version definitions will be added to plotjuggler_base target later
@@ -21,6 +25,10 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 option(ENABLE_ASAN "Enable Address Sanitizer" OFF)
 option(BASE_AS_SHARED "Build the base library as a shared library" OFF)
+option(ENABLE_LANGUAGE_TESTS "Build language settings and resource acceptance tests" OFF)
+if(ENABLE_LANGUAGE_TESTS)
+  enable_testing()
+endif()
 option(BUILDING_WITH_CONAN "Using Conan for dependencies" OFF)
 set(PJ_INSTALLATION "undefined" CACHE STRING "Installation type")
 set(PJ_PLUGINS_DIRECTORY "lib/plotjuggler/plugins" CACHE STRING "Plugins directory")
@@ -316,6 +324,13 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/plotjuggler.svg
 
 add_subdirectory(plotjuggler_app)
 add_subdirectory(plotjuggler_plugins)
+
+# Console test runners provide main(), while the GUI application uses WinMain().
+foreach(PJ_CONSOLE_TEST test_csv_parser test_ros_field)
+  if(TARGET ${PJ_CONSOLE_TEST})
+    set_target_properties(${PJ_CONSOLE_TEST} PROPERTIES WIN32_EXECUTABLE OFF)
+  endif()
+endforeach()
 
 # # Install targets
 

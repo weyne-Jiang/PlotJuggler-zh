@@ -1,4 +1,5 @@
 #include "foxglove_dialog.h"
+#include <QCoreApplication>
 
 #include <QRegularExpressionValidator>
 #include <QScrollBar>
@@ -19,7 +20,7 @@ FoxgloveDialog::FoxgloveDialog(const FoxgloveClientConfig& config)
   : QDialog(nullptr), ui(new Ui::FoxgloveDialog)
 {
   ui->setupUi(this);
-  setWindowTitle("Foxglove Bridge");
+  setWindowTitle(QCoreApplication::translate("FoxgloveDialog", "Foxglove Bridge"));
 
   ui->lineEditURL->setText(config.url);
   ui->lineEditURL->setValidator(
@@ -38,7 +39,7 @@ FoxgloveDialog::FoxgloveDialog(const FoxgloveClientConfig& config)
 
   if (auto ok_btn = ui->buttonBox->button(QDialogButtonBox::Ok))
   {
-    ok_btn->setText("Subscribe");
+    ok_btn->setText(QCoreApplication::translate("FoxgloveDialog", "Subscribe"));
     ok_btn->setEnabled(false);
   }
 
@@ -95,7 +96,8 @@ void FoxgloveDialog::setChannels(const QMap<quint64, FoxgloveChannelInfo>& chann
     item->setText(0, channel.topic);
     item->setText(1, channel.schema_name);
     item->setData(0, Qt::UserRole, QVariant::fromValue<qulonglong>(channel.id));
-    item->setToolTip(0, QString("Channel ID: %1\nEncoding: %2\nSchema Encoding: %3")
+    item->setToolTip(0, QCoreApplication::translate(
+                            "FoxgloveDialog", "Channel ID: %1\nEncoding: %2\nSchema Encoding: %3")
                             .arg(channel.id)
                             .arg(channel.encoding, channel.schema_encoding));
     if (wanted.contains(channel.topic))
@@ -212,7 +214,9 @@ void FoxgloveDialog::setConnected(bool connected)
 {
   ui->buttonConnect->blockSignals(true);
   ui->buttonConnect->setChecked(connected);
-  ui->buttonConnect->setText(connected ? "Disconnect" : "Connect");
+  ui->buttonConnect->setText(connected ?
+                                 QCoreApplication::translate("FoxgloveDialog", "Disconnect") :
+                                 QCoreApplication::translate("FoxgloveDialog", "Connect"));
   ui->buttonConnect->blockSignals(false);
 
   ui->lineEditURL->setEnabled(!connected);

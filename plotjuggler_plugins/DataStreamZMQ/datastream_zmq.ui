@@ -95,17 +95,17 @@
       <widget class="QComboBox" name="comboBox">
        <item>
         <property name="text">
-         <string>tcp://</string>
+         <string notr="true">tcp://</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>ipc://</string>
+         <string notr="true">ipc://</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>pgm://</string>
+         <string notr="true">pgm://</string>
         </property>
        </item>
       </widget>

@@ -5,6 +5,7 @@
  */
 
 #include "calendar_widget.h"
+#include <QCoreApplication>
 #include "../theme_utils.h"
 
 #include <QApplication>
@@ -131,7 +132,9 @@ void CalendarWidget::paintEvent(QPaintEvent* /*event*/)
 
   // --- Day name headers ---
   p.setFont(font());
-  static const char* dayNames[] = { "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" };
+  static const char* dayNames[] = { QT_TR_NOOP("Mon"), QT_TR_NOOP("Tue"), QT_TR_NOOP("Wed"),
+                                    QT_TR_NOOP("Thu"), QT_TR_NOOP("Fri"), QT_TR_NOOP("Sat"),
+                                    QT_TR_NOOP("Sun") };
   int dayHeaderY = fmH + HeaderPad * 2;
   QColor weekendColor(0xef, 0x53, 0x50);  // semantic red for weekends
   QColor headerColor = pal.color(QPalette::Mid);
@@ -139,7 +142,7 @@ void CalendarWidget::paintEvent(QPaintEvent* /*event*/)
   {
     QRect r(c * cellW, dayHeaderY, cellW, fmH + HeaderPad);
     p.setPen((c >= 5) ? weekendColor : headerColor);
-    p.drawText(r, Qt::AlignCenter, dayNames[c]);
+    p.drawText(r, Qt::AlignCenter, tr(dayNames[c]));
   }
 
   // --- Compute effective range for painting ---

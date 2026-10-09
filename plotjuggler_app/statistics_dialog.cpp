@@ -5,6 +5,7 @@
  */
 
 #include "statistics_dialog.h"
+#include <QCoreApplication>
 #include "ui_statistics_dialog.h"
 #include <QTableWidgetItem>
 #include <cmath>
@@ -15,7 +16,8 @@ StatisticsDialog::StatisticsDialog(PlotWidget* parent)
 {
   ui->setupUi(this);
 
-  setWindowTitle(QString("Statistics | %1").arg(_parent->windowTitle()));
+  setWindowTitle(QCoreApplication::translate("StatisticsDialog", "Statistics | %1")
+                     .arg(_parent->windowTitle()));
   setWindowFlag(Qt::Tool);
 
   ui->tableWidget->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
@@ -146,7 +148,7 @@ void StatisticsDialog::setTitle(QString title)
   {
     title = "";
   }
-  setWindowTitle(QString("Statistics | %1").arg(title));
+  setWindowTitle(QCoreApplication::translate("StatisticsDialog", "Statistics | %1").arg(title));
 }
 
 void StatisticsDialog::closeEvent(QCloseEvent* event)

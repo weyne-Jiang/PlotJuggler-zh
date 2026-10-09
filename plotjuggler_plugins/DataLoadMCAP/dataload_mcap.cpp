@@ -1,4 +1,5 @@
 #include "dataload_mcap.h"
+#include <QCoreApplication>
 
 #include "PlotJuggler/messageparser_base.h"
 
@@ -334,7 +335,7 @@ bool DataLoadMCAP::readDataFromFile(FileLoadInfo* info, PlotDataMapRef& plot_dat
   auto status = reader.open(info->filename.toStdString());
   if (!status.ok())
   {
-    QMessageBox::warning(nullptr, "Can't open file",
+    QMessageBox::warning(nullptr, QCoreApplication::translate("DataLoadMCAP", "Can't open file"),
                          tr("Code: %0\n Message: %1")
                              .arg(int(status.code))
                              .arg(QString::fromStdString(status.message)));
@@ -378,10 +379,11 @@ bool DataLoadMCAP::readDataFromFile(FileLoadInfo* info, PlotDataMapRef& plot_dat
       status = readTolerantSummary(reader, summaryInfo);
       if (!status.ok())
       {
-        QMessageBox::warning(nullptr, "Can't open summary of the file",
-                             tr("Code: %0\n Message: %1")
-                                 .arg(int(status.code))
-                                 .arg(QString::fromStdString(status.message)));
+        QMessageBox::warning(
+            nullptr, QCoreApplication::translate("DataLoadMCAP", "Can't open summary of the file"),
+            tr("Code: %0\n Message: %1")
+                .arg(int(status.code))
+                .arg(QString::fromStdString(status.message)));
         return false;
       }
       messageReadMode = MessageReadMode::TolerantScan;
@@ -463,7 +465,8 @@ bool DataLoadMCAP::readDataFromFile(FileLoadInfo* info, PlotDataMapRef& plot_dat
 
   if (channels.empty())
   {
-    QMessageBox::warning(nullptr, "Can't load MCAP file",
+    QMessageBox::warning(nullptr,
+                         QCoreApplication::translate("DataLoadMCAP", "Can't load MCAP file"),
                          tr("No readable MCAP channels were found in the file."));
     return false;
   }
@@ -550,10 +553,12 @@ bool DataLoadMCAP::readDataFromFile(FileLoadInfo* info, PlotDataMapRef& plot_dat
       if (notified_encoding_problem.count(schema_encoding) == 0)
       {
         notified_encoding_problem.insert(schema_encoding);
-        auto msg = QString("No parser available for encoding [%0] nor [%1]")
+        auto msg = QCoreApplication::translate("DataLoadMCAP",
+                                               "No parser available for encoding [%0] nor [%1]")
                        .arg(channel_encoding)
                        .arg(schema_encoding);
-        QMessageBox::warning(nullptr, "Encoding problem", msg);
+        QMessageBox::warning(nullptr,
+                             QCoreApplication::translate("DataLoadMCAP", "Encoding problem"), msg);
       }
       continue;
     }
@@ -580,17 +585,19 @@ bool DataLoadMCAP::readDataFromFile(FileLoadInfo* info, PlotDataMapRef& plot_dat
     QString error_message;
     for (const auto& [schema_name, failed_parser_info] : parsers_blacklist)
     {
-      error_message += QString("Schema: %1\n").arg(QString::fromStdString(schema_name));
-      error_message +=
-          QString("Error: %1\n").arg(QString::fromStdString(failed_parser_info.error_message));
-      error_message += QString("Topics affected: \n");
+      error_message += QCoreApplication::translate("DataLoadMCAP", "Schema: %1\n")
+                           .arg(QString::fromStdString(schema_name));
+      error_message += QCoreApplication::translate("DataLoadMCAP", "Error: %1\n")
+                           .arg(QString::fromStdString(failed_parser_info.error_message));
+      error_message += QCoreApplication::translate("DataLoadMCAP", "Topics affected: \n");
       for (const auto& topic : failed_parser_info.topics)
       {
         error_message += QString(" - %1\n").arg(QString::fromStdString(topic));
       }
       error_message += "------------------\n";
     }
-    QMessageBox::warning(nullptr, "Parser Error", error_message);
+    QMessageBox::warning(nullptr, QCoreApplication::translate("DataLoadMCAP", "Parser Error"),
+                         error_message);
   }
 
   std::unordered_set<int> enabled_channels;
@@ -621,8 +628,11 @@ bool DataLoadMCAP::readDataFromFile(FileLoadInfo* info, PlotDataMapRef& plot_dat
     qDebug() << QString::fromStdString(problem.message);
   };
 
-  QProgressDialog progress_dialog("Loading... please wait", "Cancel", 0, 0, nullptr);
-  progress_dialog.setWindowTitle("Loading the MCAP file");
+  QProgressDialog progress_dialog(
+      QCoreApplication::translate("DataLoadMCAP", "Loading... please wait"),
+      QCoreApplication::translate("DataLoadMCAP", "Cancel"), 0, 0, nullptr);
+  progress_dialog.setWindowTitle(
+      QCoreApplication::translate("DataLoadMCAP", "Loading the MCAP file"));
   progress_dialog.setWindowModality(Qt::ApplicationModal);
   progress_dialog.setRange(0, std::max<size_t>(total_msgs, 1) - 1);
   progress_dialog.show();
@@ -720,12 +730,13 @@ bool DataLoadMCAP::readDataFromFile(FileLoadInfo* info, PlotDataMapRef& plot_dat
   if (messageReadMode == MessageReadMode::TolerantScan && summaryInfo.recoveryProblem &&
       !progress_dialog.wasCanceled())
   {
-    QMessageBox::warning(nullptr, "MCAP file recovered partially",
-                         tr("The MCAP file appears to be corrupted. PlotJuggler loaded the "
-                            "readable data before the first unreadable record.\n\nCode: %0\n"
-                            "Message: %1")
-                             .arg(int(summaryInfo.recoveryProblem->code))
-                             .arg(QString::fromStdString(summaryInfo.recoveryProblem->message)));
+    QMessageBox::warning(
+        nullptr, QCoreApplication::translate("DataLoadMCAP", "MCAP file recovered partially"),
+        tr("The MCAP file appears to be corrupted. PlotJuggler loaded the "
+           "readable data before the first unreadable record.\n\nCode: %0\n"
+           "Message: %1")
+            .arg(int(summaryInfo.recoveryProblem->code))
+            .arg(QString::fromStdString(summaryInfo.recoveryProblem->message)));
   }
 
   reader.close();

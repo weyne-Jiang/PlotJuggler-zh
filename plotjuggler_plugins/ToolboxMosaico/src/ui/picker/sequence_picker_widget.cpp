@@ -5,6 +5,7 @@
  */
 
 #include "sequence_picker_widget.h"
+#include <QCoreApplication>
 
 #include "../theme_utils.h"
 #include "dual_calendar_widget.h"
@@ -70,10 +71,14 @@ SequencePickerWidget::SequencePickerWidget(QWidget* parent) : QWidget(parent)
     return btn;
   };
 
-  all_button_ = add_preset(kPresetAll, "All");
-  add_preset(kPresetPast24h, "Past 24h");
-  add_preset(kPresetLast7Days, "Last 7 Days");
-  add_preset(kPresetLastMonth, "Last Month");
+  all_button_ =
+      add_preset(kPresetAll, QCoreApplication::translate("MosaicoSequencePickerWidget", "All"));
+  add_preset(kPresetPast24h,
+             QCoreApplication::translate("MosaicoSequencePickerWidget", "Past 24h"));
+  add_preset(kPresetLast7Days,
+             QCoreApplication::translate("MosaicoSequencePickerWidget", "Last 7 Days"));
+  add_preset(kPresetLastMonth,
+             QCoreApplication::translate("MosaicoSequencePickerWidget", "Last Month"));
 
   all_button_->setChecked(true);
 
@@ -241,7 +246,7 @@ void SequencePickerWidget::repositionOverlay()
 
 void SequencePickerWidget::onPresetClicked(int id)
 {
-  all_button_->setText("All");
+  all_button_->setText(QCoreApplication::translate("MosaicoSequencePickerWidget", "All"));
   applyPreset(id);
   syncCalendarToFields();
   emitFilter();
@@ -336,12 +341,12 @@ void SequencePickerWidget::checkCustomState()
   int preset = matchingPreset();
   if (preset >= 0)
   {
-    all_button_->setText("All");
+    all_button_->setText(QCoreApplication::translate("MosaicoSequencePickerWidget", "All"));
     preset_group_->button(preset)->setChecked(true);
   }
   else
   {
-    all_button_->setText("Custom");
+    all_button_->setText(QCoreApplication::translate("MosaicoSequencePickerWidget", "Custom"));
     all_button_->setChecked(true);
   }
   syncCalendarToFields();

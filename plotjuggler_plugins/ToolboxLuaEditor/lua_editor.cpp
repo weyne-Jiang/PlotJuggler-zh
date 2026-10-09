@@ -1,4 +1,5 @@
 #include "lua_editor.h"
+#include <QCoreApplication>
 #include "ui_lua_editor.h"
 #include <QSettings>
 #include <QPushButton>
@@ -128,7 +129,8 @@ bool ToolboxLuaEditor::xmlSaveState(QDomDocument& doc, QDomElement& parent_eleme
 {
   if (ui->listWidgetFunctions->count() > 0)
   {
-    QString msg = "Do you want to save the current active scripts?\n\n";
+    QString msg = QCoreApplication::translate(
+        "ToolboxLuaEditor", "Do you want to save the current active scripts?\n\n");
 
     for (int row = 0; row < ui->listWidgetFunctions->count(); row++)
     {
@@ -252,7 +254,7 @@ void ToolboxLuaEditor::onSave()
   if (ui->listWidgetFunctions->findItems(name, Qt::MatchExactly).size() > 0)
   {
     QMessageBox msgBox(_widget);
-    msgBox.setWindowTitle("Warning");
+    msgBox.setWindowTitle(QCoreApplication::translate("ToolboxLuaEditor", "Warning"));
     msgBox.setText(tr("A dfunction with the same name exists already.\n"
                       " Do you want to overwrite it?\n"));
     msgBox.addButton(QMessageBox::Cancel);
@@ -290,7 +292,9 @@ void ToolboxLuaEditor::onSave()
   }
   catch (std::runtime_error& err)
   {
-    QMessageBox::warning(nullptr, "Error in Lua code", QString(err.what()), QMessageBox::Cancel);
+    QMessageBox::warning(nullptr,
+                         QCoreApplication::translate("ToolboxLuaEditor", "Error in Lua code"),
+                         QString(err.what()), QMessageBox::Cancel);
   }
 
   auto prev_items = ui->listWidgetRecent->findItems(name, Qt::MatchExactly);
@@ -375,7 +379,8 @@ void ToolboxLuaEditor::onLibraryUpdated()
   try
   {
     ReactiveLuaFunction tmp(_plot_data, "", "", ui->textLibrary->toPlainText());
-    ui->labelSemaphore->setToolTip("Everything is fine :)");
+    ui->labelSemaphore->setToolTip(
+        QCoreApplication::translate("ToolboxLuaEditor", "Everything is fine :)"));
     int active_series = ui->listWidgetFunctions->count();
     ui->pushButtonApplyLibrary->setEnabled(active_series > 0);
     _previous_library = ui->textLibrary->toPlainText();
@@ -418,7 +423,9 @@ void ToolboxLuaEditor::onReloadLibrary()
     }
     catch (std::runtime_error& err)
     {
-      QMessageBox::warning(nullptr, "Error in Lua code", QString(err.what()), QMessageBox::Cancel);
+      QMessageBox::warning(nullptr,
+                           QCoreApplication::translate("ToolboxLuaEditor", "Error in Lua code"),
+                           QString(err.what()), QMessageBox::Cancel);
     }
   }
   ui->pushButtonApplyLibrary->setEnabled(false);

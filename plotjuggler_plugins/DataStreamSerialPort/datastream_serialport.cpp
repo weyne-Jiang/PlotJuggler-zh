@@ -17,6 +17,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 */
 
 #include "datastream_serialport.h"
+#include <QCoreApplication>
 
 #include <chrono>
 #include <memory>
@@ -71,14 +72,14 @@ static QString enumToString(enum FlowControl flowControl)
   switch (flowControl)
   {
     case FlowControlNone:
-      return QObject::tr("None");
+      return QCoreApplication::translate("DatastreamSerialPort", "None");
     case FlowControlSoftware:
-      return QObject::tr("Software");
+      return QCoreApplication::translate("DatastreamSerialPort", "Software");
     case FlowControlHardware:
-      return QObject::tr("Hardware");
+      return QCoreApplication::translate("DatastreamSerialPort", "Hardware");
     default:
       Q_ASSERT(0);
-      return QObject::tr("?");
+      return QCoreApplication::translate("DatastreamSerialPort", "?");
   }
 }
 
@@ -87,16 +88,16 @@ static QString enumToString(enum DataBits dataBits)
   switch (dataBits)
   {
     case DataBits8:
-      return QObject::tr("8");
+      return QCoreApplication::translate("DatastreamSerialPort", "8");
     case DataBits7:
-      return QObject::tr("7");
+      return QCoreApplication::translate("DatastreamSerialPort", "7");
     case DataBits6:
-      return QObject::tr("6");
+      return QCoreApplication::translate("DatastreamSerialPort", "6");
     case DataBits5:
-      return QObject::tr("5");
+      return QCoreApplication::translate("DatastreamSerialPort", "5");
     default:
       Q_ASSERT(0);
-      return QObject::tr("?");
+      return QCoreApplication::translate("DatastreamSerialPort", "?");
   }
 }
 
@@ -105,14 +106,14 @@ static QString enumToString(enum Parity parity)
   switch (parity)
   {
     case ParityNone:
-      return QObject::tr("None");
+      return QCoreApplication::translate("DatastreamSerialPort", "None");
     case ParityEven:
-      return QObject::tr("Even");
+      return QCoreApplication::translate("DatastreamSerialPort", "Even");
     case ParityOdd:
-      return QObject::tr("Odd");
+      return QCoreApplication::translate("DatastreamSerialPort", "Odd");
     default:
       Q_ASSERT(0);
-      return QObject::tr("?");
+      return QCoreApplication::translate("DatastreamSerialPort", "?");
   }
 }
 
@@ -121,12 +122,12 @@ static QString enumToString(enum StopBits stopBits)
   switch (stopBits)
   {
     case StopBits1:
-      return QObject::tr("1");
+      return QCoreApplication::translate("DatastreamSerialPort", "1");
     case StopBits2:
-      return QObject::tr("2");
+      return QCoreApplication::translate("DatastreamSerialPort", "2");
     default:
       Q_ASSERT(0);
-      return QObject::tr("?");
+      return QCoreApplication::translate("DatastreamSerialPort", "?");
   }
 }
 
@@ -200,33 +201,41 @@ static QString serialPortErrorToString(QSerialPort::SerialPortError error)
   switch (error)
   {
     case QSerialPort::NoError:
-      return QObject::tr("No error occurred.");
+      return QCoreApplication::translate("DatastreamSerialPort", "No error occurred.");
     case QSerialPort::DeviceNotFoundError:
-      return QObject::tr("An error occurred while attempting to open an non-existing device.");
+      return QCoreApplication::translate(
+          "DatastreamSerialPort",
+          "An error occurred while attempting to open an non-existing device.");
     case QSerialPort::PermissionError:
-      return QObject::tr(
+      return QCoreApplication::translate(
+          "DatastreamSerialPort",
           "An error occurred while attempting to open an already opened device by another process or a user not having enough permission and credentials to open.");
     case QSerialPort::OpenError:
-      return QObject::tr("An error occurred while attempting to open an already opened device.");
+      return QCoreApplication::translate(
+          "DatastreamSerialPort",
+          "An error occurred while attempting to open an already opened device.");
     case QSerialPort::NotOpenError:
       // This error occurs when an operation is executed that can only be successfully performed
       // if the device is open. This value was introduced in QtSerialPort 5.2.
-      return QObject::tr("Internal Error");
+      return QCoreApplication::translate("DatastreamSerialPort", "Internal Error");
     case QSerialPort::WriteError:
-      return QObject::tr("An I/O error occurred while writing the data.");
+      return QCoreApplication::translate("DatastreamSerialPort",
+                                         "An I/O error occurred while writing the data.");
     case QSerialPort::ReadError:
-      return QObject::tr("An I/O error occurred while reading the data.");
+      return QCoreApplication::translate("DatastreamSerialPort",
+                                         "An I/O error occurred while reading the data.");
     case QSerialPort::ResourceError:
-      return QObject::tr("An I/O error occurred.");
+      return QCoreApplication::translate("DatastreamSerialPort", "An I/O error occurred.");
     case QSerialPort::UnsupportedOperationError:
-      return QObject::tr(
+      return QCoreApplication::translate(
+          "DatastreamSerialPort",
           "The requested device operation is not supported or prohibited by the operating system.");
     case QSerialPort::TimeoutError:
-      return QObject::tr("A timeout error occurred.");
+      return QCoreApplication::translate("DatastreamSerialPort", "A timeout error occurred.");
 
     default:
     case QSerialPort::UnknownError:
-      return QObject::tr("An unidentified error occurred.");
+      return QCoreApplication::translate("DatastreamSerialPort", "An unidentified error occurred.");
   }
 }
 
@@ -319,7 +328,7 @@ public:
   DatastreamSerialPortDialog() : QDialog(nullptr), ui(new Ui::SerialPortDialog)
   {
     ui->setupUi(this);
-    setWindowTitle("Serial Port");
+    setWindowTitle(QCoreApplication::translate("DatastreamSerialPort", "Serial Port"));
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
@@ -341,9 +350,11 @@ DatastreamSerialPort::DatastreamSerialPort() : _running(false), _serialPort(null
   _notification_action = new QAction(this);
 
   connect(_notification_action, &QAction::triggered, this, [this]() {
-    QMessageBox::warning(nullptr, "Serial Port",
-                         QString("Failed to parse %1 messages").arg(_failed_parsing),
-                         QMessageBox::Ok);
+    QMessageBox::warning(
+        nullptr, QCoreApplication::translate("DatastreamSerialPort", "Serial Port"),
+        QCoreApplication::translate("DatastreamSerialPort", "Failed to parse %1 messages")
+            .arg(_failed_parsing),
+        QMessageBox::Ok);
 
     if (_failed_parsing > 0)
     {

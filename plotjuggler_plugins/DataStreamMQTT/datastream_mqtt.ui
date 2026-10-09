@@ -86,10 +86,10 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>1883</string>
+                  <string notr="true">1883</string>
                  </property>
                  <property name="placeholderText">
-                  <string>1883</string>
+                  <string notr="true">1883</string>
                  </property>
                 </widget>
                </item>
@@ -103,7 +103,7 @@
                <item row="1" column="1">
                 <widget class="LineEdit" name="lineEditHost">
                  <property name="placeholderText">
-                  <string>localhost</string>
+                  <string notr="true">localhost</string>
                  </property>
                 </widget>
                </item>
@@ -159,17 +159,17 @@
                  </property>
                  <item>
                   <property name="text">
-                   <string>MQTT 3.1</string>
+                   <string notr="true">MQTT 3.1</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>MQTT 3.1.1</string>
+                   <string notr="true">MQTT 3.1.1</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>MQTT 5</string>
+                   <string notr="true">MQTT 5</string>
                   </property>
                  </item>
                 </widget>
@@ -191,17 +191,17 @@
                  </property>
                  <item>
                   <property name="text">
-                   <string>0</string>
+                   <string notr="true">0</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>1</string>
+                   <string notr="true">1</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>2</string>
+                   <string notr="true">2</string>
                   </property>
                  </item>
                 </widget>
@@ -430,7 +430,7 @@
              </size>
             </property>
             <property name="text">
-             <string>X</string>
+             <string notr="true">X</string>
             </property>
             <property name="flat">
              <bool>true</bool>
@@ -455,7 +455,7 @@
              </size>
             </property>
             <property name="text">
-             <string>X</string>
+             <string notr="true">X</string>
             </property>
             <property name="flat">
              <bool>true</bool>
@@ -480,7 +480,7 @@
              </size>
             </property>
             <property name="text">
-             <string>X</string>
+             <string notr="true">X</string>
             </property>
             <property name="flat">
              <bool>true</bool>
@@ -564,10 +564,10 @@
           <item row="0" column="1">
            <widget class="LineEdit" name="lineEditTopicFilter">
             <property name="text">
-             <string>#</string>
+             <string notr="true">#</string>
             </property>
             <property name="placeholderText">
-             <string>#</string>
+             <string notr="true">#</string>
             </property>
            </widget>
           </item>

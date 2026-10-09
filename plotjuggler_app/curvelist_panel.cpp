@@ -5,6 +5,7 @@
  */
 
 #include "curvelist_panel.h"
+#include <QCoreApplication>
 #include "ui_curvelist_panel.h"
 #include "PlotJuggler/alphanum.hpp"
 #include <QDebug>
@@ -95,7 +96,7 @@ void CurveListPanel::clear()
   _custom_view->clear();
   _tree_view->clear();
   _tree_view_items.clear();
-  ui->labelNumberDisplayed->setText("0 of 0");
+  ui->labelNumberDisplayed->setText(QCoreApplication::translate("CurveListPanel", "0 of 0"));
 }
 
 bool CurveListPanel::addCurve(const std::string& plot_name)
@@ -440,8 +441,8 @@ void CurveListPanel::on_lineEditFilter_textChanged(const QString& search_string)
   const auto& [hidden_count, item_count] = _tree_view->hiddenItemsCount();
   const int visible_count = item_count - hidden_count;
 
-  ui->labelNumberDisplayed->setText(QString::number(visible_count) + QString(" of ") +
-                                    QString::number(item_count));
+  ui->labelNumberDisplayed->setText(
+      QCoreApplication::translate("CurveListPanel", "%1 of %2").arg(visible_count).arg(item_count));
   if (updated)
   {
     emit hiddenItemsChanged();
@@ -505,15 +506,19 @@ void CurveListPanel::onCustomSelectionChanged(const QItemSelection&, const QItem
 
   bool enabled = (selected.size() == 1);
   ui->buttonEditCustom->setEnabled(enabled);
-  ui->buttonEditCustom->setToolTip(enabled ? "Edit the selected custom timeserie" :
-                                             "Select a single custom Timeserie to Edit "
-                                             "it");
+  ui->buttonEditCustom->setToolTip(
+      enabled ?
+          QCoreApplication::translate("CurveListPanel", "Edit the selected custom timeserie") :
+          QCoreApplication::translate("CurveListPanel", "Select a single custom Timeserie to Edit "
+                                                        "it"));
 
   enabled = (selected.size() > 0);
   ui->buttonDeleteCustom->setEnabled(enabled);
-  ui->buttonDeleteCustom->setToolTip(enabled ? "Delete the selected custom timeseries" :
-                                               "Select one or more custom timeseries to"
-                                               " delete them");
+  ui->buttonDeleteCustom->setToolTip(
+      enabled ?
+          QCoreApplication::translate("CurveListPanel", "Delete the selected custom timeseries") :
+          QCoreApplication::translate("CurveListPanel", "Select one or more custom timeseries to"
+                                                        " delete them"));
 }
 
 void CurveListPanel::on_buttonEditCustom_clicked()
@@ -591,7 +596,7 @@ void CurveListPanel::on_checkBoxShowValues_toggled(bool show)
 void CurveListPanel::on_pushButtonTrash_clicked(bool)
 {
   QMessageBox msgBox(this);
-  msgBox.setWindowTitle("Warning. Can't be undone.");
+  msgBox.setWindowTitle(QCoreApplication::translate("CurveListPanel", "Warning. Can't be undone."));
   msgBox.setText(tr("Delete data:\n\n"
                     "[Delete All]: remove timeseries and plots.\n"
                     "[Delete Points]: reset data points, but keep plots and "

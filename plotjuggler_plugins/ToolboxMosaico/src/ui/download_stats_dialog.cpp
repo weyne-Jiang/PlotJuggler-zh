@@ -5,6 +5,7 @@
  */
 
 #include "download_stats_dialog.h"
+#include <QCoreApplication>
 
 #include "format_utils.h"
 
@@ -43,7 +44,7 @@ QLabel* makeHeaderLabel(const QString& text, QWidget* parent)
 
 DownloadStatsDialog::DownloadStatsDialog(QWidget* parent) : QDialog(parent)
 {
-  setWindowTitle(QStringLiteral("Download Statistics"));
+  setWindowTitle(QCoreApplication::translate("MosaicoDownloadStatsDialog", "Download Statistics"));
   setWindowModality(Qt::WindowModal);
   resize(720, 360);
 
@@ -57,14 +58,24 @@ DownloadStatsDialog::DownloadStatsDialog(QWidget* parent) : QDialog(parent)
   grid_->setColumnStretch(1, 1);
   grid_->setColumnStretch(2, 1);
   grid_->setColumnStretch(3, 1);
-  grid_->addWidget(makeHeaderLabel(QStringLiteral("Topic"), this), 0, 0);
-  grid_->addWidget(makeHeaderLabel(QStringLiteral("Bytes"), this), 0, 1);
-  grid_->addWidget(makeHeaderLabel(QStringLiteral("Speed"), this), 0, 2);
-  grid_->addWidget(makeHeaderLabel(QStringLiteral("Status"), this), 0, 3);
+  grid_->addWidget(
+      makeHeaderLabel(QCoreApplication::translate("MosaicoDownloadStatsDialog", "Topic"), this), 0,
+      0);
+  grid_->addWidget(
+      makeHeaderLabel(QCoreApplication::translate("MosaicoDownloadStatsDialog", "Bytes"), this), 0,
+      1);
+  grid_->addWidget(
+      makeHeaderLabel(QCoreApplication::translate("MosaicoDownloadStatsDialog", "Speed"), this), 0,
+      2);
+  grid_->addWidget(
+      makeHeaderLabel(QCoreApplication::translate("MosaicoDownloadStatsDialog", "Status"), this), 0,
+      3);
   root->addLayout(grid_);
 
   auto* buttons = new QDialogButtonBox(this);
-  cancel_button_ = buttons->addButton(QStringLiteral("Cancel"), QDialogButtonBox::RejectRole);
+  cancel_button_ =
+      buttons->addButton(QCoreApplication::translate("MosaicoDownloadStatsDialog", "Cancel"),
+                         QDialogButtonBox::RejectRole);
   root->addWidget(buttons);
   connect(cancel_button_, &QPushButton::clicked, this, &DownloadStatsDialog::reject);
 
@@ -80,7 +91,7 @@ void DownloadStatsDialog::start(const QStringList& topics)
   cancelling_ = false;
   total_speed_samples_.clear();
   elapsed_.restart();
-  cancel_button_->setText(QStringLiteral("Cancel"));
+  cancel_button_->setText(QCoreApplication::translate("MosaicoDownloadStatsDialog", "Cancel"));
   cancel_button_->setEnabled(true);
 
   int row = 1;
@@ -161,7 +172,8 @@ void DownloadStatsDialog::markCancelling()
 {
   cancelling_ = true;
   cancel_button_->setEnabled(false);
-  cancel_button_->setText(QStringLiteral("Cancelling..."));
+  cancel_button_->setText(
+      QCoreApplication::translate("MosaicoDownloadStatsDialog", "Cancelling..."));
   for (auto it = rows_.begin(); it != rows_.end(); ++it)
   {
     if (!it->finished)
@@ -184,7 +196,7 @@ void DownloadStatsDialog::markComplete(const QString& unfinished_status)
   cancelling_ = false;
   timer_->stop();
   cancel_button_->setEnabled(true);
-  cancel_button_->setText(QStringLiteral("Close"));
+  cancel_button_->setText(QCoreApplication::translate("MosaicoDownloadStatsDialog", "Close"));
   refreshStats();
   // Force a synchronous repaint. The per-row "Done" / "0 B/s" setText
   // calls above queue paint events, but those events sit behind the
@@ -222,11 +234,12 @@ void DownloadStatsDialog::refreshStats()
 
   addSpeedSample(total_speed_samples_, now, decoded_total);
   const qint64 total_speed = active_ ? rollingSpeed(total_speed_samples_) : 0;
-  const QString state = cancelling_ ? QStringLiteral("Cancelling") :
-                        active_     ? QStringLiteral("Downloading") :
-                                      QStringLiteral("Complete");
+  const QString state =
+      cancelling_ ? QCoreApplication::translate("MosaicoDownloadStatsDialog", "Cancelling") :
+      active_     ? QCoreApplication::translate("MosaicoDownloadStatsDialog", "Downloading") :
+                    QCoreApplication::translate("MosaicoDownloadStatsDialog", "Complete");
   summary_label_->setText(
-      QStringLiteral("%1 - decoded %2, speed %3")
+      QCoreApplication::translate("MosaicoDownloadStatsDialog", "%1 - decoded %2, speed %3")
           .arg(state, formatByteCount(decoded_total), formatSpeed(total_speed)));
 }
 
@@ -272,7 +285,23 @@ void DownloadStatsDialog::finishRow(Row& row, const QString& status)
 
 void DownloadStatsDialog::setRowStatus(Row& row, const QString& status)
 {
-  row.status->setText(status);
+  static const char* labels[] = { QT_TRANSLATE_NOOP("MosaicoDownloadStatsDialog", "Waiting"),
+                                  QT_TRANSLATE_NOOP("MosaicoDownloadStatsDialog", "Downloading"),
+                                  QT_TRANSLATE_NOOP("MosaicoDownloadStatsDialog", "Done"),
+                                  QT_TRANSLATE_NOOP("MosaicoDownloadStatsDialog", "Failed"),
+                                  QT_TRANSLATE_NOOP("MosaicoDownloadStatsDialog", "Cancelling"),
+                                  QT_TRANSLATE_NOOP("MosaicoDownloadStatsDialog", "Cancelled"),
+                                  QT_TRANSLATE_NOOP("MosaicoDownloadStatsDialog", "Complete") };
+  QString display_status = status;
+  for (const char* label : labels)
+  {
+    if (status == QLatin1String(label))
+    {
+      display_status = QCoreApplication::translate("MosaicoDownloadStatsDialog", label);
+      break;
+    }
+  }
+  row.status->setText(display_status);
 
   QString color = QStringLiteral("#57606a");
   if (status == QStringLiteral("Downloading"))

@@ -1,4 +1,5 @@
 #include "foxglove_client.h"
+#include <QCoreApplication>
 
 #include <QDialogButtonBox>
 #include <QtEndian>
@@ -93,7 +94,7 @@ FoxgloveBridgeClient::FoxgloveBridgeClient()
 
 void FoxgloveBridgeClient::setupSettings()
 {
-  _action_pause = new QAction("Pause", this);
+  _action_pause = new QAction(QCoreApplication::translate("FoxgloveBridgeClient", "Pause"), this);
   connect(_action_pause, &QAction::triggered, this, &FoxgloveBridgeClient::onPauseTriggered);
 
   _actions = { _action_pause };
@@ -144,7 +145,8 @@ void FoxgloveBridgeClient::onPauseTriggered()
     return;
   }
   _paused = !_paused;
-  _action_pause->setText(_paused ? "Resume" : "Pause");
+  _action_pause->setText(_paused ? QCoreApplication::translate("FoxgloveBridgeClient", "Resume") :
+                                   QCoreApplication::translate("FoxgloveBridgeClient", "Pause"));
 }
 
 bool FoxgloveBridgeClient::openDialogConnection()
@@ -158,7 +160,9 @@ bool FoxgloveBridgeClient::openDialogConnection()
   const QUrl url(url_str);
   if (!url.isValid())
   {
-    QMessageBox::warning(_dialog, "Foxglove Bridge", "Invalid URL", QMessageBox::Ok);
+    QMessageBox::warning(
+        _dialog, QCoreApplication::translate("FoxgloveBridgeClient", "Foxglove Bridge"),
+        QCoreApplication::translate("FoxgloveBridgeClient", "Invalid URL"), QMessageBox::Ok);
     _dialog->setConnected(false);
     return false;
   }
@@ -167,7 +171,8 @@ bool FoxgloveBridgeClient::openDialogConnection()
   _config.url = url_str;
   saveDefaultSettings();
 
-  _dialog->connectButton()->setText("Connecting...");
+  _dialog->connectButton()->setText(
+      QCoreApplication::translate("FoxgloveBridgeClient", "Connecting..."));
 
   QNetworkRequest request(_url);
   request.setRawHeader("Sec-WebSocket-Protocol", kSubprotocol);
@@ -255,7 +260,7 @@ void FoxgloveBridgeClient::shutdown()
 
   if (_action_pause)
   {
-    _action_pause->setText("Pause");
+    _action_pause->setText(QCoreApplication::translate("FoxgloveBridgeClient", "Pause"));
   }
 
 #ifdef PJ_BUILD
@@ -288,7 +293,7 @@ void FoxgloveBridgeClient::updateOkButton()
   }
   const bool enabled =
       _running && _state == FoxgloveState::SelectingTopics && _dialog->hasSelection();
-  _dialog->setOkButton("Subscribe", enabled);
+  _dialog->setOkButton(QCoreApplication::translate("FoxgloveBridgeClient", "Subscribe"), enabled);
 }
 
 void FoxgloveBridgeClient::resetState()
@@ -317,15 +322,20 @@ bool FoxgloveBridgeClient::subscribeSelectedChannels(
   const auto factories = parserFactories();
   if (!factories)
   {
-    QMessageBox::warning(nullptr, "Foxglove Bridge", "No parser factories are available",
-                         QMessageBox::Ok);
+    QMessageBox::warning(
+        nullptr, QCoreApplication::translate("FoxgloveBridgeClient", "Foxglove Bridge"),
+        QCoreApplication::translate("FoxgloveBridgeClient", "No parser factories are available"),
+        QMessageBox::Ok);
     return false;
   }
 
   auto parser_it = factories->find("ros2msg");
   if (parser_it == factories->end())
   {
-    QMessageBox::warning(nullptr, "Foxglove Bridge", "No parser available for encoding [ros2msg]",
+    QMessageBox::warning(nullptr,
+                         QCoreApplication::translate("FoxgloveBridgeClient", "Foxglove Bridge"),
+                         QCoreApplication::translate("FoxgloveBridgeClient",
+                                                     "No parser available for encoding [ros2msg]"),
                          QMessageBox::Ok);
     return false;
   }
@@ -352,7 +362,9 @@ bool FoxgloveBridgeClient::subscribeSelectedChannels(
           channel.topic.toStdString(), channel.schema_name.toStdString(), schema_data, dataMap());
       if (!parser)
       {
-        failures.push_back(QString("%1: parser creation returned null").arg(channel.topic));
+        failures.push_back(
+            QCoreApplication::translate("FoxgloveBridgeClient", "%1: parser creation returned null")
+                .arg(channel.topic));
         continue;
       }
       parser->setLargeArraysPolicy(_config.clamp_large_arrays, _config.max_array_size);
@@ -379,8 +391,13 @@ bool FoxgloveBridgeClient::subscribeSelectedChannels(
   if (subscriptions_json.isEmpty())
   {
     const QString msg =
-        failures.isEmpty() ? "No compatible ROS 2 channels were selected" : failures.join('\n');
-    QMessageBox::warning(nullptr, "Foxglove Bridge", msg, QMessageBox::Ok);
+        failures.isEmpty() ?
+            QCoreApplication::translate("FoxgloveBridgeClient",
+                                        "No compatible ROS 2 channels were selected") :
+            failures.join('\n');
+    QMessageBox::warning(nullptr,
+                         QCoreApplication::translate("FoxgloveBridgeClient", "Foxglove Bridge"),
+                         msg, QMessageBox::Ok);
     return false;
   }
 
@@ -389,9 +406,12 @@ bool FoxgloveBridgeClient::subscribeSelectedChannels(
   message["subscriptions"] = subscriptions_json;
   if (!sendJsonMessage(message))
   {
-    QMessageBox::warning(nullptr, "Foxglove Bridge",
-                         "Failed to send subscribe request because the connection is no longer "
-                         "available",
+    QMessageBox::warning(nullptr,
+                         QCoreApplication::translate("FoxgloveBridgeClient", "Foxglove Bridge"),
+                         QCoreApplication::translate(
+                             "FoxgloveBridgeClient",
+                             "Failed to send subscribe request because the connection is no longer "
+                             "available"),
                          QMessageBox::Ok);
     return false;
   }
@@ -419,12 +439,14 @@ bool FoxgloveBridgeClient::subscribeSelectedChannels(
   _paused = false;
   if (_action_pause)
   {
-    _action_pause->setText("Pause");
+    _action_pause->setText(QCoreApplication::translate("FoxgloveBridgeClient", "Pause"));
   }
 
   if (!failures.isEmpty())
   {
-    QMessageBox::warning(nullptr, "Foxglove Bridge", failures.join('\n'), QMessageBox::Ok);
+    QMessageBox::warning(nullptr,
+                         QCoreApplication::translate("FoxgloveBridgeClient", "Foxglove Bridge"),
+                         failures.join('\n'), QMessageBox::Ok);
   }
 
   return true;
@@ -503,13 +525,15 @@ void FoxgloveBridgeClient::onDisconnected()
 
   if (_action_pause)
   {
-    _action_pause->setText("Pause");
+    _action_pause->setText(QCoreApplication::translate("FoxgloveBridgeClient", "Pause"));
   }
 
   if (was_running && !was_closing && !_dialog && previous_state == FoxgloveState::Streaming)
   {
-    QMessageBox::warning(nullptr, "Foxglove Bridge", "Server closed the connection",
-                         QMessageBox::Ok);
+    QMessageBox::warning(
+        nullptr, QCoreApplication::translate("FoxgloveBridgeClient", "Foxglove Bridge"),
+        QCoreApplication::translate("FoxgloveBridgeClient", "Server closed the connection"),
+        QMessageBox::Ok);
     emit closed();
   }
 }
@@ -524,7 +548,9 @@ void FoxgloveBridgeClient::onError(QAbstractSocket::SocketError)
       _dialog->clearChannels();
       updateOkButton();
     }
-    QMessageBox::warning(nullptr, "Foxglove Bridge", _socket.errorString(), QMessageBox::Ok);
+    QMessageBox::warning(nullptr,
+                         QCoreApplication::translate("FoxgloveBridgeClient", "Foxglove Bridge"),
+                         _socket.errorString(), QMessageBox::Ok);
   }
 }
 
@@ -613,7 +639,9 @@ void FoxgloveBridgeClient::onTextMessageReceived(const QString& message)
       {
         const quint32 subscription_id = sub_it.value();
         removed_subscribed_topics.push_back(
-            channel_topic.isEmpty() ? QString("channel %1").arg(channel_id) : channel_topic);
+            channel_topic.isEmpty() ?
+                QCoreApplication::translate("FoxgloveBridgeClient", "channel %1").arg(channel_id) :
+                channel_topic);
         _subscription_by_channel.erase(sub_it);
         _subscriptions.remove(subscription_id);
 #ifdef PJ_BUILD
@@ -631,19 +659,23 @@ void FoxgloveBridgeClient::onTextMessageReceived(const QString& message)
     {
       if (_subscriptions.isEmpty())
       {
-        QMessageBox::warning(nullptr, "Foxglove Bridge",
-                             QString("All subscribed channels were removed by the server:\n%1")
-                                 .arg(removed_subscribed_topics.join('\n')),
-                             QMessageBox::Ok);
+        QMessageBox::warning(
+            nullptr, QCoreApplication::translate("FoxgloveBridgeClient", "Foxglove Bridge"),
+            QCoreApplication::translate("FoxgloveBridgeClient",
+                                        "All subscribed channels were removed by the server:\n%1")
+                .arg(removed_subscribed_topics.join('\n')),
+            QMessageBox::Ok);
         shutdown();
         emit closed();
         return;
       }
 
-      QMessageBox::warning(nullptr, "Foxglove Bridge",
-                           QString("The server removed subscribed channel(s):\n%1")
-                               .arg(removed_subscribed_topics.join('\n')),
-                           QMessageBox::Ok);
+      QMessageBox::warning(
+          nullptr, QCoreApplication::translate("FoxgloveBridgeClient", "Foxglove Bridge"),
+          QCoreApplication::translate("FoxgloveBridgeClient",
+                                      "The server removed subscribed channel(s):\n%1")
+              .arg(removed_subscribed_topics.join('\n')),
+          QMessageBox::Ok);
     }
     return;
   }
@@ -676,7 +708,9 @@ void FoxgloveBridgeClient::onTextMessageReceived(const QString& message)
 
     if (!text.isEmpty() && level >= kStatusLevelWarning)
     {
-      QMessageBox::warning(nullptr, "Foxglove Bridge", text, QMessageBox::Ok);
+      QMessageBox::warning(nullptr,
+                           QCoreApplication::translate("FoxgloveBridgeClient", "Foxglove Bridge"),
+                           text, QMessageBox::Ok);
     }
     return;
   }

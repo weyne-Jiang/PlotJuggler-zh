@@ -1,4 +1,5 @@
 #include "dataload_ulog.h"
+#include <QCoreApplication>
 #include <QTextStream>
 #include <QFile>
 #include <QMessageBox>
@@ -86,7 +87,7 @@ bool DataLoadULog::readDataFromFile(FileLoadInfo* fileload_info, PlotDataMapRef&
   }
 
   ULogParametersDialog* dialog = new ULogParametersDialog(parser, _main_win);
-  dialog->setWindowTitle(QString("ULog file %1").arg(filename));
+  dialog->setWindowTitle(QCoreApplication::translate("DataLoadULog", "ULog file %1").arg(filename));
   dialog->setAttribute(Qt::WA_DeleteOnClose);
   dialog->restoreSettings();
   dialog->show();

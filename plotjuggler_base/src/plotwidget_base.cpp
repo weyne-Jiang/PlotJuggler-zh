@@ -5,6 +5,7 @@
  */
 
 #include "PlotJuggler/plotwidget_base.h"
+#include <QCoreApplication>
 #include "timeseries_qwt.h"
 
 #include "plotmagnifier.h"
@@ -409,7 +410,8 @@ PlotWidgetBase::CurveInfo* PlotWidgetBase::addCurve(const std::string& name, Plo
   }
   catch (std::exception& ex)
   {
-    QMessageBox::warning(qwtPlot(), "Exception!", ex.what());
+    QMessageBox::warning(qwtPlot(), QCoreApplication::translate("PJ::PlotWidgetBase", "Exception!"),
+                         ex.what());
     return nullptr;
   }
 

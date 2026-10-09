@@ -1,4 +1,5 @@
 #include "mqtt_client.h"
+#include <QCoreApplication>
 #include <QDebug>
 #include <QMessageBox>
 #include <QString>
@@ -29,8 +30,9 @@ void connect_callback(struct mosquitto* mosq, void* context, int result, int,
   }
   else
   {
-    QMessageBox::warning(nullptr, "MQTT Client",
-                         QString("Connection error: %1").arg(mosquitto_reason_string(result)),
+    QMessageBox::warning(nullptr, QCoreApplication::translate("MQTTClient", "MQTT Client"),
+                         QCoreApplication::translate("MQTTClient", "Connection error: %1")
+                             .arg(mosquitto_reason_string(result)),
                          QMessageBox::Ok);
   }
   self->_connected = true;
@@ -134,7 +136,8 @@ bool MQTTClient::configureMosquitto(const MosquittoConfig& config)
   int rc = mosquitto_int_option(_mosq, MOSQ_OPT_PROTOCOL_VERSION, config.protocol_version);
   if (rc != MOSQ_ERR_SUCCESS)
   {
-    QMessageBox::warning(nullptr, "MQTT Client", QString("MQTT initialization failed."),
+    QMessageBox::warning(nullptr, QCoreApplication::translate("MQTTClient", "MQTT Client"),
+                         QCoreApplication::translate("MQTTClient", "MQTT initialization failed."),
                          QMessageBox::Ok);
     debug() << "MQTT initialization failed:" << mosquitto_strerror(rc);
     return false;
@@ -145,9 +148,10 @@ bool MQTTClient::configureMosquitto(const MosquittoConfig& config)
     rc = mosquitto_username_pw_set(_mosq, config.username.c_str(), config.password.c_str());
     if (rc != MOSQ_ERR_SUCCESS)
     {
-      QMessageBox::warning(nullptr, "MQTT Client",
-                           QString("MQTT initialization failed. Double check username "
-                                   "and password."),
+      QMessageBox::warning(nullptr, QCoreApplication::translate("MQTTClient", "MQTT Client"),
+                           QCoreApplication::translate(
+                               "MQTTClient", "MQTT initialization failed. Double check username "
+                                             "and password."),
                            QMessageBox::Ok);
       debug() << "MQTT username or password error:" << mosquitto_strerror(rc);
       return false;
@@ -162,9 +166,10 @@ bool MQTTClient::configureMosquitto(const MosquittoConfig& config)
     rc = mosquitto_tls_set(_mosq, cafile, nullptr, certfile, keyfile, nullptr);
     if (rc != MOSQ_ERR_SUCCESS)
     {
-      QMessageBox::warning(nullptr, "MQTT Client",
-                           QString("MQTT initialization failed. Double check "
-                                   "certificates."),
+      QMessageBox::warning(nullptr, QCoreApplication::translate("MQTTClient", "MQTT Client"),
+                           QCoreApplication::translate("MQTTClient",
+                                                       "MQTT initialization failed. Double check "
+                                                       "certificates."),
                            QMessageBox::Ok);
       debug() << "MQTT certificate error:" << mosquitto_strerror(rc);
       return false;
@@ -174,7 +179,8 @@ bool MQTTClient::configureMosquitto(const MosquittoConfig& config)
   rc = mosquitto_max_inflight_messages_set(_mosq, config.max_inflight);
   if (rc != MOSQ_ERR_SUCCESS)
   {
-    QMessageBox::warning(nullptr, "MQTT Client", QString("MQTT initialization failed."),
+    QMessageBox::warning(nullptr, QCoreApplication::translate("MQTTClient", "MQTT Client"),
+                         QCoreApplication::translate("MQTTClient", "MQTT initialization failed."),
                          QMessageBox::Ok);
     debug() << "MQTT setting max inflight messages failed:" << mosquitto_strerror(rc);
     return false;
@@ -195,12 +201,15 @@ bool MQTTClient::configureMosquitto(const MosquittoConfig& config)
 #else
       FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, errno, 0, (LPTSTR)&err, 1024, NULL);
 #endif
-      QMessageBox::warning(nullptr, "MQTT Client", QString("Error: %1").arg(err), QMessageBox::Ok);
+      QMessageBox::warning(nullptr, QCoreApplication::translate("MQTTClient", "MQTT Client"),
+                           QCoreApplication::translate("MQTTClient", "Error: %1").arg(err),
+                           QMessageBox::Ok);
     }
     else
     {
-      QMessageBox::warning(nullptr, "MQTT Client",
-                           QString("Unable to connect (%1)").arg(mosquitto_strerror(rc)),
+      QMessageBox::warning(nullptr, QCoreApplication::translate("MQTTClient", "MQTT Client"),
+                           QCoreApplication::translate("MQTTClient", "Unable to connect (%1)")
+                               .arg(mosquitto_strerror(rc)),
                            QMessageBox::Ok);
     }
     debug() << "MQTT connect failed:" << mosquitto_strerror(rc);
@@ -222,7 +231,8 @@ bool MQTTClient::configureMosquitto(const MosquittoConfig& config)
   }
   else if (rc != MOSQ_ERR_SUCCESS)
   {
-    QMessageBox::warning(nullptr, "MQTT Client", QString("Failed to start MQTT client"),
+    QMessageBox::warning(nullptr, QCoreApplication::translate("MQTTClient", "MQTT Client"),
+                         QCoreApplication::translate("MQTTClient", "Failed to start MQTT client"),
                          QMessageBox::Ok);
     debug() << "MQTT start loop failed:" << mosquitto_strerror(rc);
     return false;

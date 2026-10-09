@@ -1,4 +1,5 @@
 #include "dataload_parquet.h"
+#include <QCoreApplication>
 #include <arrow/type_fwd.h>
 #include <QTextStream>
 #include <QFile>
@@ -348,8 +349,10 @@ bool DataLoadParquet::readDataFromFile(FileLoadInfo* info, PlotDataMapRef& plot_
   }
 
   QProgressDialog progress_dialog;
-  progress_dialog.setWindowTitle("Loading the Parquet file");
-  progress_dialog.setLabelText("Loading... please wait");
+  progress_dialog.setWindowTitle(
+      QCoreApplication::translate("DataLoadParquet", "Loading the Parquet file"));
+  progress_dialog.setLabelText(
+      QCoreApplication::translate("DataLoadParquet", "Loading... please wait"));
   progress_dialog.setWindowModality(Qt::ApplicationModal);
   progress_dialog.setRange(0, columns_info.size());
   progress_dialog.setAutoClose(true);

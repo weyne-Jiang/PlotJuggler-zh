@@ -451,7 +451,7 @@ QScrollBar::handle:vertical {
                       </font>
                      </property>
                      <property name="text">
-                      <string>function( time, value )</string>
+                      <string notr="true">function( time, value )</string>
                      </property>
                     </widget>
                    </item>
@@ -471,14 +471,14 @@ QScrollBar::handle:vertical {
                    <item>
                     <widget class="QRadioButton" name="luaButton">
                      <property name="text">
-                      <string>Lua</string>
+                      <string notr="true">Lua</string>
                      </property>
                     </widget>
                    </item>
                    <item>
                     <widget class="QRadioButton" name="pythonButton">
                      <property name="text">
-                      <string>Python</string>
+                      <string notr="true">Python</string>
                      </property>
                     </widget>
                    </item>
@@ -974,7 +974,7 @@ QScrollBar::handle:vertical {
                 <item>
                  <widget class="QLabel" name="labelFunction_2">
                   <property name="text">
-                   <string>function( time, value )</string>
+                   <string notr="true">function( time, value )</string>
                   </property>
                  </widget>
                 </item>
@@ -994,14 +994,14 @@ QScrollBar::handle:vertical {
                 <item>
                  <widget class="QRadioButton" name="luaBatchButton">
                   <property name="text">
-                   <string>Lua</string>
+                   <string notr="true">Lua</string>
                   </property>
                  </widget>
                 </item>
                 <item>
                  <widget class="QRadioButton" name="pythonBatchButton">
                   <property name="text">
-                   <string>Python</string>
+                   <string notr="true">Python</string>
                   </property>
                  </widget>
                 </item>

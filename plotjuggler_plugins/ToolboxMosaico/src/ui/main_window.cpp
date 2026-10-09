@@ -6,6 +6,7 @@
 
 // SDK headers before Qt (arrow/flight/api.h vs Qt signals macro).
 #include <flight/mosaico_client.hpp>
+#include <QCoreApplication>
 #include "main_window.h"
 
 #include "../core/time_format.h"
@@ -67,7 +68,7 @@ void guardedSlot(ElidedLabel* status, const char* where, Fn&& fn)
     qWarning() << "[Mosaico]" << where << "exception:" << e.what();
     if (status)
     {
-      status->setText(QStringLiteral("Mosaico error (%1): %2")
+      status->setText(QCoreApplication::translate("MosaicoMainWindow", "Mosaico error (%1): %2")
                           .arg(QString::fromUtf8(where), QString::fromUtf8(e.what())));
     }
   }
@@ -76,7 +77,9 @@ void guardedSlot(ElidedLabel* status, const char* where, Fn&& fn)
     qWarning() << "[Mosaico]" << where << "exception: unknown";
     if (status)
     {
-      status->setText(QStringLiteral("Mosaico error (%1): unknown").arg(QString::fromUtf8(where)));
+      status->setText(
+          QCoreApplication::translate("MosaicoMainWindow", "Mosaico error (%1): unknown")
+              .arg(QString::fromUtf8(where)));
     }
   }
 }
@@ -90,7 +93,9 @@ void showCopyableWarning(QWidget* parent, const QString& title, const QString& m
 {
   QMessageBox box(QMessageBox::Warning, title, message, QMessageBox::Ok, parent);
   box.setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
-  auto* copy_btn = box.addButton("Copy to clipboard", QMessageBox::ActionRole);
+  auto* copy_btn =
+      box.addButton(QCoreApplication::translate("MosaicoMainWindow", "Copy to clipboard"),
+                    QMessageBox::ActionRole);
   QObject::connect(copy_btn, &QPushButton::clicked,
                    [message]() { QApplication::clipboard()->setText(message); });
   box.setDefaultButton(QMessageBox::Ok);
@@ -144,7 +149,7 @@ void MainWindow::buildLayout()
   constexpr int kRowH = 28;
   constexpr int kIconSz = 20;
 
-  auto* uri_label = new QLabel("Server:", this);
+  auto* uri_label = new QLabel(QCoreApplication::translate("MosaicoMainWindow", "Server:"), this);
   uri_label->setFixedWidth(50);
 
   server_uri_combo_ = new QComboBox(this);
@@ -154,7 +159,8 @@ void MainWindow::buildLayout()
   server_uri_combo_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
   server_uri_combo_->setFixedHeight(kRowH);
 
-  connect_button_ = new QPushButton("Connect", this);
+  connect_button_ =
+      new QPushButton(QCoreApplication::translate("MosaicoMainWindow", "Connect"), this);
   // Minimum (not fixed) so the wider "Connecting…" state doesn't get clipped.
   connect_button_->setMinimumWidth(70);
   connect_button_->setFixedHeight(kRowH);
@@ -173,7 +179,9 @@ void MainWindow::buildLayout()
   auto* back_button = make_icon_btn(":/resources/svg/left-arrow.svg", "Back");
   connect(back_button, &QPushButton::clicked, this, &MainWindow::backRequested);
 
-  refresh_button_ = make_icon_btn(":/resources/svg/reload.svg", "Refresh sequences");
+  refresh_button_ =
+      make_icon_btn(":/resources/svg/reload.svg",
+                    QCoreApplication::translate("MosaicoMainWindow", "Refresh sequences"));
   refresh_button_->setEnabled(false);
 
   // Certificate/API-key entry — opens the cert dialog. Uses the plugin's
@@ -182,8 +190,9 @@ void MainWindow::buildLayout()
   cert_button_->setFlat(true);
   cert_button_->setFixedSize(kRowH, kRowH);
   cert_button_->setIconSize(QSize(kIconSz, kIconSz));
-  cert_button_->setToolTip(
-      "Certificate & API key (cert optional — system trust store used by default)");
+  cert_button_->setToolTip(QCoreApplication::translate(
+      "MosaicoMainWindow",
+      "Certificate & API key (cert optional — system trust store used by default)"));
   QPixmap cert_pix(":/mosaico/certificate.svg");
   if (!cert_pix.isNull())
   {
@@ -237,8 +246,10 @@ void MainWindow::buildLayout()
   range_slider_->setMinimumHeight(range_slider_->minimumSizeHint().height());
   range_slider_->setEnabled(false);
 
-  fetch_button_ = new QPushButton("Download", this);
-  fetch_button_->setToolTip("Download selected topics");
+  fetch_button_ =
+      new QPushButton(QCoreApplication::translate("MosaicoMainWindow", "Download"), this);
+  fetch_button_->setToolTip(
+      QCoreApplication::translate("MosaicoMainWindow", "Download selected topics"));
   fetch_button_->setEnabled(false);
   fetch_button_->setMinimumWidth(80);
 
@@ -256,7 +267,7 @@ void MainWindow::buildLayout()
   status_label_ = new ElidedLabel(this);
   vlayout->addWidget(status_label_);
 
-  setStatus("Click Connect to load sequences");
+  setStatus(QCoreApplication::translate("MosaicoMainWindow", "Click Connect to load sequences"));
 }
 
 // ---------------------------------------------------------------------------
@@ -354,7 +365,9 @@ void MainWindow::onSequenceListStarted(const std::vector<SequenceInfo>& sequence
     all_sequences_ = sequences;
     sequence_panel_->populateSequences(sequences);
     sequence_panel_->setMetadataLoadingProgress(0, static_cast<qint64>(sequences.size()));
-    setStatus(QString("Connected - loading details for %1 sequence(s)").arg(sequences.size()));
+    setStatus(QCoreApplication::translate("MosaicoMainWindow",
+                                          "Connected - loading details for %1 sequence(s)")
+                  .arg(sequences.size()));
   });
 }
 
@@ -380,7 +393,9 @@ void MainWindow::onSequenceInfoReady(const SequenceInfo& sequence, qint64 comple
 
     sequence_panel_->updateSequence(sequence);
     sequence_panel_->setMetadataLoadingProgress(completed, total);
-    setStatus(QString("Loading sequence details %1/%2").arg(completed).arg(total));
+    setStatus(QCoreApplication::translate("MosaicoMainWindow", "Loading sequence details %1/%2")
+                  .arg(completed)
+                  .arg(total));
   });
 }
 
@@ -399,13 +414,14 @@ void MainWindow::onSequencesReady(const std::vector<SequenceInfo>& sequences)
     all_sequences_ = sequences;
     sequence_panel_->setLoading(false);
     connect_button_->setEnabled(true);
-    connect_button_->setText("Connect");
+    connect_button_->setText(QCoreApplication::translate("MosaicoMainWindow", "Connect"));
     refresh_button_->setEnabled(true);
 
     error_context_ = ErrorContext::None;
     connection_mode_ =
         attempted_plaintext_fallback_ ? ConnectionMode::Insecure : ConnectionMode::Secure;
-    setStatus(QString("Connected \u2014 %1 sequence(s)").arg(sequences.size()));
+    setStatus(QCoreApplication::translate("MosaicoMainWindow", "Connected \u2014 %1 sequence(s)")
+                  .arg(sequences.size()));
 
     // Build metadata schema for the query bar.
     std::map<std::string, std::set<std::string>> key_values_set;
@@ -460,7 +476,8 @@ void MainWindow::onSequenceSelected(const QString& sequence_name)
     }
   }
 
-  setStatus("Loading topics for " + sequence_name + QString::fromUtf8("\u2026"));
+  setStatus(QCoreApplication::translate("MosaicoMainWindow", "Loading topics for ") +
+            sequence_name + QString::fromUtf8("\u2026"));
   QMetaObject::invokeMethod(worker_, "fetchTopics", Qt::QueuedConnection,
                             Q_ARG(QString, sequence_name));
 }
@@ -473,11 +490,13 @@ void MainWindow::onTopicsReady(const QStringList& names, const std::vector<Topic
     topic_panel_->populateTopics(infos);
     if (names.isEmpty())
     {
-      setStatus("No topics returned \u2014 enter a topic name manually if needed");
+      setStatus(QCoreApplication::translate(
+          "MosaicoMainWindow", "No topics returned \u2014 enter a topic name manually if needed"));
     }
     else
     {
-      setStatus(QString("%1 topic(s) available").arg(names.size()));
+      setStatus(QCoreApplication::translate("MosaicoMainWindow", "%1 topic(s) available")
+                    .arg(names.size()));
     }
   });
 }
@@ -535,13 +554,15 @@ void MainWindow::onTopicsSelected(const QString& /*sequence_name*/, const QStrin
 
   if (topic_names.size() == 1)
   {
-    setStatus("Selected " + topic_names.first() +
-              QString::fromUtf8(" \u2014 adjust range and click Fetch"));
+    setStatus(
+        QCoreApplication::translate("MosaicoMainWindow", "Selected ") + topic_names.first() +
+        QCoreApplication::translate("MosaicoMainWindow", " \u2014 adjust range and click Fetch"));
   }
   else
   {
-    setStatus(
-        QString("Selected %1 topics \u2014 adjust range and click Fetch").arg(topic_names.size()));
+    setStatus(QCoreApplication::translate("MosaicoMainWindow",
+                                          "Selected %1 topics \u2014 adjust range and click Fetch")
+                  .arg(topic_names.size()));
   }
 }
 
@@ -651,7 +672,7 @@ void MainWindow::requestFetchCancel()
     download_stats_dialog_->markCancelling();
   }
   fetch_button_->setEnabled(false);
-  setStatus(QStringLiteral("Cancelling..."));
+  setStatus(QCoreApplication::translate("MosaicoMainWindow", "Cancelling..."));
 }
 
 void MainWindow::finishFetchTopic(const QString& topic_name, bool success)
@@ -687,8 +708,9 @@ void MainWindow::finishFetchTopic(const QString& topic_name, bool success)
 
 void MainWindow::finishFetchBatch()
 {
-  fetch_button_->setText("Download");
-  fetch_button_->setToolTip("Download selected topics");
+  fetch_button_->setText(QCoreApplication::translate("MosaicoMainWindow", "Download"));
+  fetch_button_->setToolTip(
+      QCoreApplication::translate("MosaicoMainWindow", "Download selected topics"));
   fetch_button_->setEnabled(!selected_topics_.isEmpty());
 
   error_context_ = ErrorContext::None;
@@ -711,12 +733,12 @@ void MainWindow::finishFetchBatch()
     {
       worker_->resetCancel();
     }
-    setStatus(QStringLiteral("Download cancelled"));
+    setStatus(QCoreApplication::translate("MosaicoMainWindow", "Download cancelled"));
     emit fetchCancelled();
   }
   else
   {
-    setStatus(QStringLiteral("Loaded selected data"));
+    setStatus(QCoreApplication::translate("MosaicoMainWindow", "Loaded selected data"));
     emit allFetchesComplete();
   }
 
@@ -731,8 +753,10 @@ void MainWindow::finishFetchBatch()
       lines << (it.value() > 1 ? QStringLiteral("  [%1x] %2").arg(it.value()).arg(it.key()) :
                                  QStringLiteral("  %1").arg(it.key()));
     }
-    const QString title = total == 1 ? QStringLiteral("Fetch Error") :
-                                       QStringLiteral("Fetch Errors (%1 topics)").arg(total);
+    const QString title =
+        total == 1 ?
+            QCoreApplication::translate("MosaicoMainWindow", "Fetch Error") :
+            QCoreApplication::translate("MosaicoMainWindow", "Fetch Errors (%1 topics)").arg(total);
     const QString body =
         total == 1 ? lines.first().trimmed() :
                      QStringLiteral("%1 topic(s) failed:\n\n%2").arg(total).arg(lines.join("\n"));
@@ -761,8 +785,11 @@ void MainWindow::onFetchProgress(const QString& topic_name, qint64 bytes, qint64
   {
     body = QStringLiteral("%1 decoded").arg(formatBytes(bytes));
   }
-  setStatus(
-      QStringLiteral("Fetching %1 (%2/%3): %4").arg(topic_name).arg(idx).arg(total).arg(body));
+  setStatus(QCoreApplication::translate("MosaicoMainWindow", "Fetching %1 (%2/%3): %4")
+                .arg(topic_name)
+                .arg(idx)
+                .arg(total)
+                .arg(body));
 }
 
 void MainWindow::onTopicFetchError(const QString& topic_name, const QString& message)
@@ -777,7 +804,7 @@ void MainWindow::onTopicFetchError(const QString& topic_name, const QString& mes
     const bool cancel_drain = cancelling_fetch_;
     if (!cancel_drain)
     {
-      setStatus("Error: " + message);
+      setStatus(QCoreApplication::translate("MosaicoMainWindow", "Error: ") + message);
       pending_fetch_errors_[message]++;
     }
     finishFetchTopic(topic_name, false);
@@ -815,9 +842,11 @@ void MainWindow::onFetchClicked()
   qint64 start_ns = sliderToNs(range_slider_->GetLowerValue());
   qint64 end_ns = sliderToNs(range_slider_->GetUpperValue());
 
-  fetch_button_->setText("Cancel");
-  fetch_button_->setToolTip("Cancel the in-flight download");
-  setStatus(QString::fromUtf8("Fetching %1 topic(s)…").arg(pending_fetches_));
+  fetch_button_->setText(QCoreApplication::translate("MosaicoMainWindow", "Cancel"));
+  fetch_button_->setToolTip(
+      QCoreApplication::translate("MosaicoMainWindow", "Cancel the in-flight download"));
+  setStatus(QCoreApplication::translate("MosaicoMainWindow", "Fetching %1 topic(s)…")
+                .arg(pending_fetches_));
   if (!download_stats_dialog_)
   {
     download_stats_dialog_ = new DownloadStatsDialog(this);
@@ -873,7 +902,9 @@ void MainWindow::onFetchError(const QString& message)
         in_connect && !attempted_plaintext_fallback_ && cert_path_.isEmpty() && !allow_insecure_;
     if (insecure_blocked)
     {
-      display_msg = "Connectivity to insecure channels is disabled, visit certificate settings";
+      display_msg = QCoreApplication::translate(
+          "MosaicoMainWindow",
+          "Connectivity to insecure channels is disabled, visit certificate settings");
     }
 
     const bool cancel_drain = cancelling_fetch_ && error_context_ == ErrorContext::Fetch;
@@ -888,14 +919,15 @@ void MainWindow::onFetchError(const QString& message)
 
     if (!cancel_drain)
     {
-      setStatus("Error: " + display_msg);
+      setStatus(QCoreApplication::translate("MosaicoMainWindow", "Error: ") + display_msg);
     }
 
     // Popup on explicit clicks and on the insecure-blocked case — but never
     // during a cancel drain; each drained topic would otherwise spam a popup.
     if (!cancel_drain && (error_context_ == ErrorContext::ExplicitConnect || insecure_blocked))
     {
-      showCopyableWarning(this, "Connection Error", display_msg);
+      showCopyableWarning(
+          this, QCoreApplication::translate("MosaicoMainWindow", "Connection Error"), display_msg);
     }
 
     if (error_context_ == ErrorContext::Fetch)
@@ -912,7 +944,7 @@ void MainWindow::onFetchError(const QString& message)
     if (in_connect)
     {
       connect_button_->setEnabled(true);
-      connect_button_->setText("Connect");
+      connect_button_->setText(QCoreApplication::translate("MosaicoMainWindow", "Connect"));
       sequence_panel_->setLoading(false);
     }
 
@@ -939,7 +971,7 @@ void MainWindow::onRefreshClicked()
 
   refresh_button_->setEnabled(false);
   sequence_panel_->setLoading(true);
-  setStatus(QString::fromUtf8("Refreshing\u2026"));
+  setStatus(QCoreApplication::translate("MosaicoMainWindow", "Refreshing\u2026"));
   error_context_ = ErrorContext::ExplicitConnect;
   QMetaObject::invokeMethod(worker_, "fetchSequences", Qt::QueuedConnection);
 }
@@ -989,16 +1021,18 @@ void MainWindow::connectToServer(bool explicit_connect)
     // Stale connection_mode_ from a previous session could misleadingly
     // suffix this error with "(secure connection)". Clear it first.
     connection_mode_ = ConnectionMode::None;
-    setStatus("Error: " + message);
+    setStatus(QCoreApplication::translate("MosaicoMainWindow", "Error: ") + message);
     if (explicit_connect)
     {
-      showCopyableWarning(this, "Invalid input", message);
+      showCopyableWarning(this, QCoreApplication::translate("MosaicoMainWindow", "Invalid input"),
+                          message);
     }
   };
 
   if (!isPrintableAscii(host_port) || !host_port.contains(QLatin1Char(':')))
   {
-    fail("Server must be host:port in printable ASCII.");
+    fail(QCoreApplication::translate("MosaicoMainWindow",
+                                     "Server must be host:port in printable ASCII."));
     return;
   }
   if (!isPrintableAscii(cert_path_))
@@ -1038,9 +1072,9 @@ void MainWindow::connectToServer(bool explicit_connect)
 
   error_context_ = explicit_connect ? ErrorContext::ExplicitConnect : ErrorContext::AutoConnect;
   connect_button_->setEnabled(false);
-  connect_button_->setText(QString::fromUtf8("Connecting\u2026"));
+  connect_button_->setText(QCoreApplication::translate("MosaicoMainWindow", "Connecting\u2026"));
   sequence_panel_->setLoading(true);
-  setStatus(QString::fromUtf8("Connecting\u2026"));
+  setStatus(QCoreApplication::translate("MosaicoMainWindow", "Connecting\u2026"));
   QMetaObject::invokeMethod(worker_, "fetchSequences", Qt::QueuedConnection);
 }
 
@@ -1252,10 +1286,12 @@ void MainWindow::setStatus(const QString& message)
   switch (connection_mode_)
   {
     case ConnectionMode::Secure:
-      status_label_->setText(message + QStringLiteral(" (secure connection)"));
+      status_label_->setText(
+          message + QCoreApplication::translate("MosaicoMainWindow", " (secure connection)"));
       return;
     case ConnectionMode::Insecure:
-      status_label_->setText(message + QStringLiteral(" (insecure connection)"));
+      status_label_->setText(
+          message + QCoreApplication::translate("MosaicoMainWindow", " (insecure connection)"));
       return;
     case ConnectionMode::None:
       status_label_->setText(message);

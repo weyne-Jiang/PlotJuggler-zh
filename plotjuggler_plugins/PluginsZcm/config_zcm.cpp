@@ -1,4 +1,5 @@
 #include "config_zcm.h"
+#include <QCoreApplication>
 #include "ui_config_zcm.h"
 
 #include <QFileDialog>
@@ -74,7 +75,8 @@ void ConfigZCM::on_pushButtonAdd_clicked()
 {
   QSettings settings;
   auto dir = settings.value(_prefix + "::load_dir", QDir::currentPath()).toString();
-  auto files = QFileDialog::getOpenFileNames(this, "Zcm libraries", dir, "*.so *.dll");
+  auto files = QFileDialog::getOpenFileNames(
+      this, QCoreApplication::translate("ConfigZCM", "Zcm libraries"), dir, "*.so *.dll");
   for (auto filename : files)
   {
     if (ui->listWidgetLibs->findItems(filename, Qt::MatchExactly).empty())

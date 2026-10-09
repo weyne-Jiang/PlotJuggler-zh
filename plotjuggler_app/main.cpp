@@ -5,6 +5,7 @@
  */
 
 #include "mainwindow.h"
+#include "language_manager.h"
 #include <iostream>
 #include <QApplication>
 #include <QSplashScreen>
@@ -234,6 +235,9 @@ int main(int argc, char* argv[])
   }
 
   app.setApplicationVersion(VERSION_STRING);
+
+  PJ::LanguageManager language_manager;
+  language_manager.install(PJ::LanguageManager::savedPreference(settings));
 
   //---------------------------
   TransformFactory::registerTransform<FirstDerivative>();

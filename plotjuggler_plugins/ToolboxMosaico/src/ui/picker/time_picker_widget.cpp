@@ -5,6 +5,7 @@
  */
 
 #include "time_picker_widget.h"
+#include <QCoreApplication>
 
 #include <QHBoxLayout>
 #include <QSpinBox>
@@ -67,7 +68,7 @@ TimePickerWidget::TimePickerWidget(QWidget* parent) : QWidget(parent)
 
   // Every day checkbox
   layout->addSpacing(16);
-  every_day_ = new QCheckBox("Every day");
+  every_day_ = new QCheckBox(QCoreApplication::translate("MosaicoTimePickerWidget", "Every day"));
   layout->addWidget(every_day_);
 
   layout->addStretch();

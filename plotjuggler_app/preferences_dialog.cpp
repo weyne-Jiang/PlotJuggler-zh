@@ -5,6 +5,7 @@
  */
 
 #include "preferences_dialog.h"
+#include "language_manager.h"
 #include "ui_preferences_dialog.h"
 #include <QSettings>
 #include <QDir>
@@ -17,6 +18,18 @@ PreferencesDialog::PreferencesDialog(QWidget* parent)
 {
   ui->setupUi(this);
   QSettings settings;
+
+  const QString language = PJ::LanguageManager::savedPreference(settings);
+  ui->comboBoxLanguage->addItem(tr("Follow system"), "system");
+  ui->comboBoxLanguage->addItem(QStringLiteral("English"), "en");
+  ui->comboBoxLanguage->addItem(QStringLiteral("简体中文"), "zh_CN");
+  ui->comboBoxLanguage->setCurrentIndex(ui->comboBoxLanguage->findData(language));
+  ui->labelLanguageRestart->hide();
+  connect(ui->comboBoxLanguage, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
+          [this, language](int) {
+            ui->labelLanguageRestart->setVisible(ui->comboBoxLanguage->currentData().toString() !=
+                                                 language);
+          });
 
   // Apperance
   QString theme = settings.value("Preferences::theme", "light").toString();
@@ -104,6 +117,7 @@ PreferencesDialog::~PreferencesDialog()
 void PreferencesDialog::on_buttonBox_accepted()
 {
   QSettings settings;
+  settings.setValue(PJ::LanguageManager::kSettingsKey, ui->comboBoxLanguage->currentData());
   settings.setValue("Preferences::theme",
                     ui->comboBoxTheme->currentIndex() == 1 ? "dark" : "light");
   settings.setValue("Preferences::remember_color", ui->checkBoxRememberColor->isChecked());

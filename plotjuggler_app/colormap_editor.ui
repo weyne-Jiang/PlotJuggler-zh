@@ -135,7 +135,7 @@
             </font>
            </property>
            <property name="text">
-            <string>function ColorMap(v)</string>
+            <string notr="true">function ColorMap(v)</string>
            </property>
           </widget>
          </item>
@@ -164,7 +164,7 @@
        <item>
         <widget class="QCodeEditor" name="functionText">
          <property name="placeholderText">
-          <string>--example: if v&gt;0 then return &quot;red&quot; end</string>
+          <string notr="true">--example: if v&gt;0 then return &quot;red&quot; end</string>
          </property>
         </widget>
        </item>

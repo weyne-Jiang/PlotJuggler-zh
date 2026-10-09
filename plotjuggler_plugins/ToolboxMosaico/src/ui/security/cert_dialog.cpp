@@ -5,6 +5,7 @@
  */
 
 #include "cert_dialog.h"
+#include <QCoreApplication>
 #include "tls_utils.h"
 
 #include <QCheckBox>
@@ -21,7 +22,7 @@
 
 CertDialog::CertDialog(QWidget* parent) : QDialog(parent)
 {
-  setWindowTitle("Certificate & API Key");
+  setWindowTitle(QCoreApplication::translate("MosaicoCertDialog", "Certificate & API Key"));
   setMinimumWidth(450);
 
   auto* layout = new QVBoxLayout(this);
@@ -35,9 +36,10 @@ CertDialog::CertDialog(QWidget* parent) : QDialog(parent)
 
   key_edit_ = new QLineEdit(this);
   key_edit_->setEchoMode(QLineEdit::Password);
-  key_edit_->setPlaceholderText("API key (msco_...)");
+  key_edit_->setPlaceholderText(
+      QCoreApplication::translate("MosaicoCertDialog", "API key (msco_...)"));
 
-  show_btn_ = new QPushButton("Show", this);
+  show_btn_ = new QPushButton(QCoreApplication::translate("MosaicoCertDialog", "Show"), this);
   show_btn_->setCheckable(true);
 
   key_row->addWidget(key_tick_);
@@ -52,9 +54,11 @@ CertDialog::CertDialog(QWidget* parent) : QDialog(parent)
   cert_tick_->setAlignment(Qt::AlignCenter);
 
   cert_edit_ = new QLineEdit(this);
-  cert_edit_->setPlaceholderText("Path to CA certificate (.pem) (optional)");
+  cert_edit_->setPlaceholderText(
+      QCoreApplication::translate("MosaicoCertDialog", "Path to CA certificate (.pem) (optional)"));
 
-  auto* browse_btn = new QPushButton("Browse", this);
+  auto* browse_btn =
+      new QPushButton(QCoreApplication::translate("MosaicoCertDialog", "Browse"), this);
 
   cert_row->addWidget(cert_tick_);
   cert_row->addWidget(cert_edit_, 1);
@@ -70,11 +74,14 @@ CertDialog::CertDialog(QWidget* parent) : QDialog(parent)
   // Per-URL opt-in to plaintext fallback. Off by default for every server
   // the user hasn't explicitly enabled. The tooltip spells out the
   // consequences so it's harder to flip on by accident.
-  allow_insecure_ = new QCheckBox("Allow insecure (plaintext) connection", this);
-  allow_insecure_->setToolTip(
+  allow_insecure_ = new QCheckBox(
+      QCoreApplication::translate("MosaicoCertDialog", "Allow insecure (plaintext) connection"),
+      this);
+  allow_insecure_->setToolTip(QCoreApplication::translate(
+      "MosaicoCertDialog",
       "When enabled, if the TLS handshake fails and no custom certificate is set, "
       "the plugin retries the connection in plaintext. API keys will be sent "
-      "unencrypted — only enable for trusted networks or local servers.");
+      "unencrypted — only enable for trusted networks or local servers."));
 
   // --- Button box ---
   auto* button_box = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, this);
@@ -121,15 +128,16 @@ bool CertDialog::allowInsecure() const
 void CertDialog::closeEvent(QCloseEvent* event)
 {
   show_btn_->setChecked(false);
-  show_btn_->setText("Show");
+  show_btn_->setText(QCoreApplication::translate("MosaicoCertDialog", "Show"));
   key_edit_->setEchoMode(QLineEdit::Password);
   QDialog::closeEvent(event);
 }
 
 void CertDialog::onBrowse()
 {
-  QString path =
-      QFileDialog::getOpenFileName(this, "Select CA Certificate", QString(), "PEM files (*.pem)");
+  QString path = QFileDialog::getOpenFileName(
+      this, QCoreApplication::translate("MosaicoCertDialog", "Select CA Certificate"), QString(),
+      QCoreApplication::translate("MosaicoCertDialog", "PEM files (*.pem)"));
   if (!path.isEmpty())
   {
     cert_edit_->setText(path);
@@ -179,5 +187,6 @@ void CertDialog::validateKey()
 void CertDialog::onShowToggled(bool checked)
 {
   key_edit_->setEchoMode(checked ? QLineEdit::Normal : QLineEdit::Password);
-  show_btn_->setText(checked ? "Hide" : "Show");
+  show_btn_->setText(checked ? QCoreApplication::translate("MosaicoCertDialog", "Hide") :
+                               QCoreApplication::translate("MosaicoCertDialog", "Show"));
 }

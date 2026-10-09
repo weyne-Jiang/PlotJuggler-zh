@@ -1,4 +1,5 @@
 #include "datastream_mqtt.h"
+#include <QCoreApplication>
 #include "ui_datastream_mqtt.h"
 #include "PlotJuggler/dialog_utils.h"
 #include <QMetaObject>
@@ -15,9 +16,11 @@ DataStreamMQTT::DataStreamMQTT() : _running(false)
   _notification_action = new QAction(this);
 
   connect(_notification_action, &QAction::triggered, this, [this]() {
-    QMessageBox::warning(nullptr, "MQTT error",
-                         QString("Failed to parse %1 messages").arg(_failed_parsing),
-                         QMessageBox::Ok);
+    QMessageBox::warning(
+        nullptr, QCoreApplication::translate("DataStreamMQTT", "MQTT error"),
+        QCoreApplication::translate("DataStreamMQTT", "Failed to parse %1 messages")
+            .arg(_failed_parsing),
+        QMessageBox::Ok);
 
     if (_failed_parsing > 0)
     {

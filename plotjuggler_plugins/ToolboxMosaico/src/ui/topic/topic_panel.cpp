@@ -5,6 +5,7 @@
  */
 
 #include "topic_panel.h"
+#include <QCoreApplication>
 
 #include "../format_utils.h"
 
@@ -43,18 +44,19 @@ public:
 
 TopicPanel::TopicPanel(QWidget* parent) : QWidget(parent)
 {
-  header_ = new QLabel("Topics", this);
+  header_ = new QLabel(QCoreApplication::translate("MosaicoTopicPanel", "Topics"), this);
   auto header_font = header_->font();
   header_font.setBold(true);
   header_->setFont(header_font);
 
   filter_ = new QLineEdit(this);
-  filter_->setPlaceholderText("Filter…");
+  filter_->setPlaceholderText(QCoreApplication::translate("MosaicoTopicPanel", "Filter…"));
   connect(filter_, &QLineEdit::textChanged, this, &TopicPanel::applyFilter);
 
   regex_btn_ = new QPushButton(".*", this);
   regex_btn_->setCheckable(true);
-  regex_btn_->setToolTip("Use regular expression");
+  regex_btn_->setToolTip(
+      QCoreApplication::translate("MosaicoTopicPanel", "Use regular expression"));
   regex_btn_->setFixedSize(24, 24);
   auto regex_font = regex_btn_->font();
   regex_font.setBold(true);
@@ -68,7 +70,8 @@ TopicPanel::TopicPanel(QWidget* parent) : QWidget(parent)
 
   table_ = new QTableWidget(this);
   table_->setColumnCount(2);
-  table_->setHorizontalHeaderLabels({ "Name", "Size" });
+  table_->setHorizontalHeaderLabels({ QCoreApplication::translate("MosaicoTopicPanel", "Name"),
+                                      QCoreApplication::translate("MosaicoTopicPanel", "Size") });
   table_->setSelectionBehavior(QAbstractItemView::SelectRows);
   table_->setSelectionMode(QAbstractItemView::ExtendedSelection);
   table_->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -125,25 +128,28 @@ void TopicPanel::populateTopics(const std::vector<TopicInfo>& infos)
 
   if (sorted.empty())
   {
-    header_->setText("Topics (none — click a topic manually)");
+    header_->setText(
+        QCoreApplication::translate("MosaicoTopicPanel", "Topics (none — click a topic manually)"));
   }
   else
   {
-    header_->setText(QString("Topics (%1)").arg(sorted.size()));
+    header_->setText(
+        QCoreApplication::translate("MosaicoTopicPanel", "Topics (%1)").arg(sorted.size()));
   }
   applyFilter();
 }
 
 void TopicPanel::setLoading(bool loading)
 {
-  header_->setText(loading ? "Topics (loading…)" : "Topics");
+  header_->setText(loading ? QCoreApplication::translate("MosaicoTopicPanel", "Topics (loading…)") :
+                             QCoreApplication::translate("MosaicoTopicPanel", "Topics"));
   table_->setEnabled(!loading);
 }
 
 void TopicPanel::clear()
 {
   table_->setRowCount(0);
-  header_->setText("Topics");
+  header_->setText(QCoreApplication::translate("MosaicoTopicPanel", "Topics"));
   current_sequence_.clear();
 }
 

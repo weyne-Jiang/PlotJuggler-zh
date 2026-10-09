@@ -6,6 +6,7 @@
 
 // Arrow headers MUST come before Qt (arrow/util/cancel.h vs Qt 'signals' macro).
 #include <arrow/api.h>
+#include <QCoreApplication>
 
 #include "data_view_panel.h"
 
@@ -23,7 +24,7 @@
 
 DataViewPanel::DataViewPanel(QWidget* parent) : QWidget(parent)
 {
-  header_ = new QLabel("Info", this);
+  header_ = new QLabel(QCoreApplication::translate("MosaicoDataViewPanel", "Info"), this);
   auto header_font = header_->font();
   header_font.setBold(true);
   header_->setFont(header_font);
@@ -41,7 +42,7 @@ DataViewPanel::DataViewPanel(QWidget* parent) : QWidget(parent)
 
 void DataViewPanel::clear()
 {
-  header_->setText("Info");
+  header_->setText(QCoreApplication::translate("MosaicoDataViewPanel", "Info"));
   sequence_text_.clear();
   topic_texts_.clear();
   text_view_->clear();
@@ -81,17 +82,20 @@ void DataViewPanel::showSequenceInfo(const SequenceInfo& info)
   topic_texts_.clear();
 
   QString text;
-  text += QString("Sequence : %1\n").arg(QString::fromStdString(info.name));
+  text += QCoreApplication::translate("MosaicoDataViewPanel", "Sequence : %1\n")
+              .arg(QString::fromStdString(info.name));
 
   if (info.max_ts_ns > 0)
   {
     auto dt = QDateTime::fromMSecsSinceEpoch(info.max_ts_ns / 1'000'000LL, QTimeZone::utc());
-    text += QString("Date     : %1\n").arg(dt.toString("dd/MM/yyyy"));
+    text += QCoreApplication::translate("MosaicoDataViewPanel", "Date     : %1\n")
+                .arg(dt.toString("dd/MM/yyyy"));
   }
 
   if (info.total_size_bytes > 0)
   {
-    text += QString("Size     : %1\n").arg(formatBytes(info.total_size_bytes));
+    text += QCoreApplication::translate("MosaicoDataViewPanel", "Size     : %1\n")
+                .arg(formatBytes(info.total_size_bytes));
   }
 
   if (!info.user_metadata.empty())
@@ -101,7 +105,8 @@ void DataViewPanel::showSequenceInfo(const SequenceInfo& info)
   }
 
   sequence_text_ = text;
-  header_->setText(QString("Info \u2014 %1").arg(QString::fromStdString(info.name)));
+  header_->setText(QCoreApplication::translate("MosaicoDataViewPanel", "Info \u2014 %1")
+                       .arg(QString::fromStdString(info.name)));
   rebuildText();
 }
 
@@ -152,7 +157,8 @@ static QString formatSchemaFields(const std::shared_ptr<arrow::Schema>& schema)
   {
     return text;
   }
-  text += QString("Fields (%1):\n").arg(schema->num_fields());
+  text += QCoreApplication::translate("MosaicoDataViewPanel", "Fields (%1):\n")
+              .arg(schema->num_fields());
   for (int i = 0; i < schema->num_fields(); ++i)
   {
     formatFieldType(schema->field(i), "  ", text);
@@ -169,35 +175,41 @@ static QString formatDateTime(int64_t ts_ns)
 void DataViewPanel::showTopicInfo(const TopicInfo& info)
 {
   QString text;
-  text += QString("Topic    : %1\n").arg(QString::fromStdString(info.topic_name));
-  text += QString("Tag      : %1\n").arg(QString::fromStdString(info.ontology_tag));
+  text += QCoreApplication::translate("MosaicoDataViewPanel", "Topic    : %1\n")
+              .arg(QString::fromStdString(info.topic_name));
+  text += QCoreApplication::translate("MosaicoDataViewPanel", "Tag      : %1\n")
+              .arg(QString::fromStdString(info.ontology_tag));
 
   if (info.created_at_ns > 0)
   {
-    text += QString("Created  : %1\n").arg(formatDateTime(info.created_at_ns));
+    text += QCoreApplication::translate("MosaicoDataViewPanel", "Created  : %1\n")
+                .arg(formatDateTime(info.created_at_ns));
   }
   if (info.locked)
   {
     if (info.completed_at_ns.has_value() && *info.completed_at_ns > 0)
     {
-      text += QString("Status   : sealed (%1)\n").arg(formatDateTime(*info.completed_at_ns));
+      text += QCoreApplication::translate("MosaicoDataViewPanel", "Status   : sealed (%1)\n")
+                  .arg(formatDateTime(*info.completed_at_ns));
     }
     else
     {
-      text += "Status   : sealed\n";
+      text += QCoreApplication::translate("MosaicoDataViewPanel", "Status   : sealed\n");
     }
   }
   else
   {
-    text += "Status   : live\n";
+    text += QCoreApplication::translate("MosaicoDataViewPanel", "Status   : live\n");
   }
   if (info.chunks_number > 0)
   {
-    text += QString("Chunks   : %1\n").arg(info.chunks_number);
+    text += QCoreApplication::translate("MosaicoDataViewPanel", "Chunks   : %1\n")
+                .arg(info.chunks_number);
   }
   if (!info.resource_locator.empty())
   {
-    text += QString("Resource : %1\n").arg(QString::fromStdString(info.resource_locator));
+    text += QCoreApplication::translate("MosaicoDataViewPanel", "Resource : %1\n")
+                .arg(QString::fromStdString(info.resource_locator));
   }
 
   text += formatSchemaFields(info.schema);

@@ -13,7 +13,7 @@
 #
 # See https://github.com/pre-commit/pre-commit
 
-exclude: cmake/CPM.cmake|^3rdparty/|3rdparty|^plotjuggler_base/include/PlotJuggler/contrib/|^contrib/|contrib
+exclude: cmake/CPM.cmake|^3rdparty/|3rdparty|^plotjuggler_base/include/PlotJuggler/contrib/|^contrib/|contrib|^plotjuggler_app/translations/qt/
 repos:
 
   # Standard hooks
@@ -34,6 +34,8 @@ repos:
       - id: mixed-line-ending
       - id: trailing-whitespace
         exclude_types: [svg]
+        # Whitespace inside TS source text is part of Qt's runtime lookup key.
+        exclude: '\.ts$'
       - id: fix-byte-order-marker
 
   # CPP hooks

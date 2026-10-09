@@ -5,6 +5,7 @@
  */
 
 #include "colormap_editor.h"
+#include <QCoreApplication>
 #include "ui_colormap_editor.h"
 #include "PlotJuggler/svg_util.h"
 #include <QSettings>
@@ -52,8 +53,9 @@ void ColorMapEditor::on_buttonSave_clicked()
   auto res = colormap->setScrip(ui->functionText->toPlainText());
   if (!res.valid())
   {
-    QMessageBox::warning(this, "Error in the Lua Script", colormap->getError(res),
-                         QMessageBox::Cancel);
+    QMessageBox::warning(this,
+                         QCoreApplication::translate("ColorMapEditor", "Error in the Lua Script"),
+                         colormap->getError(res), QMessageBox::Cancel);
     return;
   }
 
@@ -74,10 +76,12 @@ void ColorMapEditor::on_buttonSave_clicked()
 
   if (!ui->listWidget->findItems(name, Qt::MatchExactly).empty())
   {
-    auto reply = QMessageBox::question(this, "Confirm overwrite",
-                                       "A ColorMap with the same name exist already. "
-                                       "Do you want to overwrite it?",
-                                       QMessageBox::Yes | QMessageBox::No);
+    auto reply = QMessageBox::question(
+        this, QCoreApplication::translate("ColorMapEditor", "Confirm overwrite"),
+        QCoreApplication::translate("ColorMapEditor",
+                                    "A ColorMap with the same name exist already. "
+                                    "Do you want to overwrite it?"),
+        QMessageBox::Yes | QMessageBox::No);
     if (reply == QMessageBox::No)
     {
       return;
@@ -103,8 +107,10 @@ void ColorMapEditor::on_buttonDelete_clicked()
     {
       if (!it->second->script().isEmpty())
       {
-        auto reply = QMessageBox::question(this, "Delete ColorMap", "Are you sure?",
-                                           QMessageBox::Yes | QMessageBox::No);
+        auto reply = QMessageBox::question(
+            this, QCoreApplication::translate("ColorMapEditor", "Delete ColorMap"),
+            QCoreApplication::translate("ColorMapEditor", "Are you sure?"),
+            QMessageBox::Yes | QMessageBox::No);
         if (reply == QMessageBox::No)
         {
           return;

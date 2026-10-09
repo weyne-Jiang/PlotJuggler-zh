@@ -5,6 +5,7 @@
  */
 
 #include "sequence_panel.h"
+#include <QCoreApplication>
 
 #include "../format_utils.h"
 #include "../picker/sequence_picker_widget.h"
@@ -57,7 +58,7 @@ public:
 
 SequencePanel::SequencePanel(QWidget* parent) : QWidget(parent)
 {
-  header_ = new QLabel("Sequences", this);
+  header_ = new QLabel(QCoreApplication::translate("MosaicoSequencePanel", "Sequences"), this);
   auto header_font = header_->font();
   header_font.setBold(true);
   header_->setFont(header_font);
@@ -70,12 +71,13 @@ SequencePanel::SequencePanel(QWidget* parent) : QWidget(parent)
   });
 
   filter_ = new QLineEdit(this);
-  filter_->setPlaceholderText("Filter\u2026");
+  filter_->setPlaceholderText(QCoreApplication::translate("MosaicoSequencePanel", "Filter\u2026"));
   connect(filter_, &QLineEdit::textChanged, this, &SequencePanel::applyFilter);
 
   regex_btn_ = new QPushButton(".*", this);
   regex_btn_->setCheckable(true);
-  regex_btn_->setToolTip("Use regular expression");
+  regex_btn_->setToolTip(
+      QCoreApplication::translate("MosaicoSequencePanel", "Use regular expression"));
   regex_btn_->setFixedSize(24, 24);
   auto regex_font = regex_btn_->font();
   regex_font.setBold(true);
@@ -93,7 +95,10 @@ SequencePanel::SequencePanel(QWidget* parent) : QWidget(parent)
 
   table_ = new QTableWidget(this);
   table_->setColumnCount(3);
-  table_->setHorizontalHeaderLabels({ "Name", "Date", "Size" });
+  table_->setHorizontalHeaderLabels(
+      { QCoreApplication::translate("MosaicoSequencePanel", "Name"),
+        QCoreApplication::translate("MosaicoSequencePanel", "Date"),
+        QCoreApplication::translate("MosaicoSequencePanel", "Size") });
   table_->setSelectionBehavior(QAbstractItemView::SelectRows);
   table_->setSelectionMode(QAbstractItemView::SingleSelection);
   table_->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -175,22 +180,26 @@ void SequencePanel::updateHeader()
 {
   if (list_loading_)
   {
-    header_->setText(
-        QStringLiteral("Sequences (loading%1)").arg(QString(loading_frame_ + 1, QLatin1Char('.'))));
+    header_->setText(QCoreApplication::translate("MosaicoSequencePanel", "Sequences (loading%1)")
+                         .arg(QString(loading_frame_ + 1, QLatin1Char('.'))));
     return;
   }
 
   if (total_count_ == 0)
   {
-    header_->setText(sequence_list_populated_ ? QStringLiteral("Sequences (none found)") :
-                                                QStringLiteral("Sequences"));
+    header_->setText(
+        sequence_list_populated_ ?
+            QCoreApplication::translate("MosaicoSequencePanel", "Sequences (none found)") :
+            QCoreApplication::translate("MosaicoSequencePanel", "Sequences"));
     return;
   }
 
-  QString text = QStringLiteral("Sequences (%1/%2)").arg(visible_count_).arg(total_count_);
+  QString text = QCoreApplication::translate("MosaicoSequencePanel", "Sequences (%1/%2)")
+                     .arg(visible_count_)
+                     .arg(total_count_);
   if (metadata_loading_)
   {
-    text += QStringLiteral(" - loading details%1 %2/%3")
+    text += QCoreApplication::translate("MosaicoSequencePanel", " - loading details%1 %2/%3")
                 .arg(QString(loading_frame_ + 1, QLatin1Char('.')))
                 .arg(metadata_loaded_)
                 .arg(metadata_total_);
@@ -509,7 +518,7 @@ void SequencePanel::contextMenuEvent(QContextMenuEvent* event)
   QString name = name_item->text();
 
   QMenu menu(this);
-  auto* copy = menu.addAction("Copy name");
+  auto* copy = menu.addAction(QCoreApplication::translate("MosaicoSequencePanel", "Copy name"));
   connect(copy, &QAction::triggered, this, [name]() { QApplication::clipboard()->setText(name); });
 
   menu.exec(event->globalPos());

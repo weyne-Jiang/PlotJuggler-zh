@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string notr="true">Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -54,7 +54,7 @@
         <enum>Qt::ClickFocus</enum>
        </property>
        <property name="text">
-        <string>0.0</string>
+        <string notr="true">0.0</string>
        </property>
       </widget>
      </item>
@@ -100,7 +100,7 @@
         <enum>Qt::ClickFocus</enum>
        </property>
        <property name="text">
-        <string>0.0</string>
+        <string notr="true">0.0</string>
        </property>
       </widget>
      </item>
@@ -159,7 +159,7 @@
         <enum>Qt::ClickFocus</enum>
        </property>
        <property name="text">
-        <string>1.0</string>
+        <string notr="true">1.0</string>
        </property>
       </widget>
      </item>

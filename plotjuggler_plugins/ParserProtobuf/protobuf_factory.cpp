@@ -1,4 +1,5 @@
 #include "protobuf_factory.h"
+#include <QCoreApplication>
 
 #include <QComboBox>
 #include <QCompleter>
@@ -93,10 +94,10 @@ bool ParserFactoryProtobuf::importFile(const QString& filename)
   {
     _loaded_files.erase(basename);
     rebuildImporter();
-    QMessageBox::warning(nullptr, "Error parsing Proto file",
-                         last_error.isEmpty() ? tr("Failed to import %1").arg(filename) :
-                                                last_error,
-                         QMessageBox::Cancel);
+    QMessageBox::warning(
+        nullptr, QCoreApplication::translate("ParserFactoryProtobuf", "Error parsing Proto file"),
+        last_error.isEmpty() ? tr("Failed to import %1").arg(filename) : last_error,
+        QMessageBox::Cancel);
     return false;
   }
 

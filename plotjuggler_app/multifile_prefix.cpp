@@ -5,6 +5,7 @@
  */
 
 #include "multifile_prefix.h"
+#include <QCoreApplication>
 #include "ui_multifile_prefix.h"
 
 #include <QLabel>
@@ -35,7 +36,7 @@ DialogMultifilePrefix::DialogMultifilePrefix(QStringList filenames, QWidget* par
     label_file->setTextInteractionFlags(Qt::TextSelectableByMouse);
 
     auto form_layout = new QFormLayout();
-    auto label = new QLabel("Prefix: ");
+    auto label = new QLabel(QCoreApplication::translate("DialogMultifilePrefix", "Prefix: "));
     auto line_edit = new QLineEdit();
 
     form_layout->addRow(label, line_edit);

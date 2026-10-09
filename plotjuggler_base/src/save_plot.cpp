@@ -1,4 +1,5 @@
 #include "PlotJuggler/save_plot.h"
+#include <QCoreApplication>
 
 #include <qwt_painter.h>
 #include <qwt_plot.h>
@@ -34,8 +35,9 @@ PlotSaveHelper::PlotSaveHelper(QSize dims, QWidget* parent)
           << "svg (*.svg)";
 
   QString selected_filter;
-  _save_filename =
-      save_dialog.getSaveFileName(parent, "Save plot", "", filters.join(";;"), &selected_filter);
+  _save_filename = save_dialog.getSaveFileName(
+      parent, QCoreApplication::translate("PlotSaveHelper", "Save plot"), "", filters.join(";;"),
+      &selected_filter);
   if (_save_filename.isEmpty())
   {
     return;

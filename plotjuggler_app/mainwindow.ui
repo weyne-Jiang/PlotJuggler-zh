@@ -17,7 +17,7 @@
    <enum>Qt::StrongFocus</enum>
   </property>
   <property name="windowTitle">
-   <string>PlotJuggler</string>
+   <string notr="true">PlotJuggler</string>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
@@ -161,7 +161,7 @@
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hide/Show&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="text">
-              <string>-</string>
+              <string notr="true">-</string>
              </property>
              <property name="flat">
               <bool>true</bool>
@@ -591,7 +591,7 @@
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hide/Show&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="text">
-              <string>-</string>
+              <string notr="true">-</string>
              </property>
              <property name="flat">
               <bool>true</bool>
@@ -1014,7 +1014,7 @@
               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hide/Show&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
              </property>
              <property name="text">
-              <string>-</string>
+              <string notr="true">-</string>
              </property>
              <property name="flat">
               <bool>true</bool>
@@ -1998,7 +1998,7 @@
                      </font>
                     </property>
                     <property name="toolTip">
-                     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                     <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                     </property>
                     <property name="text">
                      <string>Step size:</string>
@@ -2124,7 +2124,7 @@
     <string>Exit</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Q</string>
+    <string notr="true">Ctrl+Q</string>
    </property>
   </action>
   <action name="actionAbout">
@@ -2149,7 +2149,7 @@
     <string>Clear data points</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Shift+C</string>
+    <string notr="true">Ctrl+Shift+C</string>
    </property>
   </action>
   <action name="actionCheatsheet">
@@ -2185,7 +2185,7 @@
     <string>Delete everything</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+Shift+X</string>
+    <string notr="true">Ctrl+Shift+X</string>
    </property>
   </action>
   <action name="actionPreferences">

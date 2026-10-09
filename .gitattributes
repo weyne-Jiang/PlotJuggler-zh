@@ -1,0 +1,4 @@
+# Whitespace inside Qt TS text nodes is part of the runtime lookup key.
+*.ts whitespace=-blank-at-eol
+# Preserve the vendored Qt catalogue byte-for-byte for its upstream SHA256.
+plotjuggler_app/translations/qt/qt_zh_CN.ts -text

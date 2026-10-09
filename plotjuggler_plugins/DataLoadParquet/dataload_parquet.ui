@@ -40,10 +40,10 @@
           <bool>false</bool>
          </property>
          <property name="text">
-          <string>yyyy-MM-dd hh:mm:ss</string>
+          <string notr="true">yyyy-MM-dd hh:mm:ss</string>
          </property>
          <property name="placeholderText">
-          <string>yyyy-MM-dd hh:mm:ss</string>
+          <string notr="true">yyyy-MM-dd hh:mm:ss</string>
          </property>
         </widget>
        </item>

@@ -1,4 +1,5 @@
 #include "function_editor.h"
+#include <QCoreApplication>
 #include "custom_function.h"
 #include "plotwidget.h"
 #include <QDebug>
@@ -94,7 +95,8 @@ FunctionEditorWidget::FunctionEditorWidget(PlotDataMapRef& plotMapData,
 
   QSettings settings;
 
-  this->setWindowTitle("Create a custom timeseries");
+  this->setWindowTitle(
+      QCoreApplication::translate("FunctionEditorWidget", "Create a custom timeseries"));
 
   QFont fixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
   fixedFont.setPointSize(10);
@@ -556,7 +558,7 @@ void FunctionEditorWidget::reloadFunctionsLibraryTable()
 
   t->clear();
   t->setColumnCount(1);
-  t->setHorizontalHeaderLabels({ "Name" });
+  t->setHorizontalHeaderLabels({ QCoreApplication::translate("FunctionEditorWidget", "Name") });
   t->setRowCount((int)_snipped_saved.size());
 
   t->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -959,11 +961,13 @@ void FunctionEditorWidget::on_nameLineEdit_textChanged(const QString& name)
 {
   if (_plot_map_data.numeric.count(name.toStdString()) == 0)
   {
-    ui->pushButtonCreate->setText("Create New Timeseries");
+    ui->pushButtonCreate->setText(
+        QCoreApplication::translate("FunctionEditorWidget", "Create New Timeseries"));
   }
   else
   {
-    ui->pushButtonCreate->setText("Modify Timeseries");
+    ui->pushButtonCreate->setText(
+        QCoreApplication::translate("FunctionEditorWidget", "Modify Timeseries"));
   }
   updatePreview();
 }
@@ -985,7 +989,10 @@ void FunctionEditorWidget::on_buttonLoadFunctions_clicked()
 
   if (!file.open(QIODevice::ReadOnly))
   {
-    QMessageBox::critical(this, "Error", QString("Failed to open the file [%1]").arg(fileName));
+    QMessageBox::critical(
+        this, QCoreApplication::translate("FunctionEditorWidget", "Error"),
+        QCoreApplication::translate("FunctionEditorWidget", "Failed to open the file [%1]")
+            .arg(fileName));
     return;
   }
 
@@ -1016,7 +1023,10 @@ void FunctionEditorWidget::on_buttonSaveFunctions_clicked()
   QFile file(fileName);
   if (!file.open(QIODevice::WriteOnly))
   {
-    QMessageBox::critical(this, "Error", QString("Failed to open the file [%1]").arg(fileName));
+    QMessageBox::critical(
+        this, QCoreApplication::translate("FunctionEditorWidget", "Error"),
+        QCoreApplication::translate("FunctionEditorWidget", "Failed to open the file [%1]")
+            .arg(fileName));
     return;
   }
   auto data = exportSnippets();
@@ -1073,7 +1083,7 @@ bool FunctionEditorWidget::addToSaved(const QString& name, const SnippetData& sn
   if (_snipped_saved.count(name))
   {
     QMessageBox msgBox(this);
-    msgBox.setWindowTitle("Warning");
+    msgBox.setWindowTitle(QCoreApplication::translate("FunctionEditorWidget", "Warning"));
     msgBox.setText(
         tr("A function with the same name exists already in the list of saved functions.\n"));
     msgBox.addButton(QMessageBox::Cancel);
@@ -1112,7 +1122,7 @@ void FunctionEditorWidget::on_pushButtonCreate_clicked()
       if (_editor_mode == CREATE && _transform_maps.count(new_plot_name) != 0)
       {
         QMessageBox msgBox(this);
-        msgBox.setWindowTitle("Warning");
+        msgBox.setWindowTitle(QCoreApplication::translate("FunctionEditorWidget", "Warning"));
         msgBox.setText(tr("A custom time series with the same name exists already.\n"
                           " Do you want to overwrite it?\n"));
         msgBox.addButton(QMessageBox::Cancel);
@@ -1165,8 +1175,10 @@ void FunctionEditorWidget::on_pushButtonCreate_clicked()
   }
   catch (const std::runtime_error& e)
   {
-    QMessageBox::critical(this, "Error",
-                          "Failed to create math plot : " + QString::fromStdString(e.what()));
+    QMessageBox::critical(
+        this, QCoreApplication::translate("FunctionEditorWidget", "Error"),
+        QCoreApplication::translate("FunctionEditorWidget", "Failed to create math plot : ") +
+            QString::fromStdString(e.what()));
   }
 }
 
@@ -1325,7 +1337,9 @@ void FunctionEditorWidget::onUpdatePreview()
   catch (std::runtime_error& err)
   {
     const QString lang = (currentLang() == ScriptLang::Python) ? "Python" : "Lua";
-    errors += QString("- Error in %1 script: %2").arg(lang).arg(err.what());
+    errors += QCoreApplication::translate("FunctionEditorWidget", "- Error in %1 script: %2")
+                  .arg(lang)
+                  .arg(err.what());
     ui->buttonSaveCurrent->setEnabled(false);
   }
 
@@ -1348,7 +1362,9 @@ void FunctionEditorWidget::onUpdatePreview()
     catch (std::runtime_error& err)
     {
       const QString lang = (currentLang() == ScriptLang::Python) ? "Python" : "Lua";
-      errors += QString("- Error in %1 script: %2").arg(lang).arg(err.what());
+      errors += QCoreApplication::translate("FunctionEditorWidget", "- Error in %1 script: %2")
+                    .arg(lang)
+                    .arg(err.what());
     }
   }
 
@@ -1416,7 +1432,9 @@ void FunctionEditorWidget::onUpdatePreviewBatch()
   catch (std::runtime_error& err)
   {
     const QString lang = (currentLangBatch() == ScriptLang::Python) ? "Python" : "Lua";
-    errors += QString("- Error in %1 script: %2").arg(lang).arg(err.what());
+    errors += QCoreApplication::translate("FunctionEditorWidget", "- Error in %1 script: %2")
+                  .arg(lang)
+                  .arg(err.what());
   }
 
   if (custom_function && ui->listBatchSources->count() > 0)
@@ -1434,7 +1452,9 @@ void FunctionEditorWidget::onUpdatePreviewBatch()
     catch (std::runtime_error& err)
     {
       const QString lang = (currentLangBatch() == ScriptLang::Python) ? "Python" : "Lua";
-      errors += QString("- Error in %1 script: %2").arg(lang).arg(err.what());
+      errors += QCoreApplication::translate("FunctionEditorWidget", "- Error in %1 script: %2")
+                    .arg(lang)
+                    .arg(err.what());
     }
   }
 

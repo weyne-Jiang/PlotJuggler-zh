@@ -1,4 +1,5 @@
 #include "websocket_client.h"
+#include <QCoreApplication>
 #include "websocket_dialog.h"
 
 #include <QJsonArray>
@@ -58,10 +59,10 @@ WebsocketClient::WebsocketClient()
 void WebsocketClient::setupSettings()
 {
   // Action shown in PlotJuggler "Settings"
-  _action_settings = new QAction("Pause", this);
+  _action_settings = new QAction(QCoreApplication::translate("WebsocketClient", "Pause"), this);
 
   // Initial state
-  _action_settings->setText("Pause");
+  _action_settings->setText(QCoreApplication::translate("WebsocketClient", "Pause"));
 
   // Toggle pause / resume
   connect(_action_settings, &QAction::triggered, this, [this]() {
@@ -83,7 +84,7 @@ void WebsocketClient::setupSettings()
       if (resume())
       {
         _paused = false;
-        _action_settings->setText("Pause");
+        _action_settings->setText(QCoreApplication::translate("WebsocketClient", "Pause"));
       }
     }
     else
@@ -92,7 +93,7 @@ void WebsocketClient::setupSettings()
       if (pause())
       {
         _paused = true;
-        _action_settings->setText("Resume");
+        _action_settings->setText(QCoreApplication::translate("WebsocketClient", "Resume"));
       }
     }
   });
@@ -150,7 +151,9 @@ bool WebsocketClient::start(QStringList*)
       const QUrl url(url_str);
       if (!url.isValid())
       {
-        QMessageBox::warning(&dialog, "WebSocket Client", "Invalid URL", QMessageBox::Ok);
+        QMessageBox::warning(
+            &dialog, QCoreApplication::translate("WebsocketClient", "WebSocket Client"),
+            QCoreApplication::translate("WebsocketClient", "Invalid URL"), QMessageBox::Ok);
         dialog.setConnected(false);
         return;
       }
@@ -239,7 +242,7 @@ void WebsocketClient::shutdown()
   // Reset the text of the Plotjuggler settings
   if (_action_settings)
   {
-    _action_settings->setText("Pause");
+    _action_settings->setText(QCoreApplication::translate("WebsocketClient", "Pause"));
   }
 
   resetState();
@@ -357,8 +360,10 @@ void WebsocketClient::onDisconnected()
 
   if (!_dialog && !_closing)
   {
-    QMessageBox::warning(nullptr, "WebSocket Client", "Server closed the connection",
-                         QMessageBox::Ok);
+    QMessageBox::warning(
+        nullptr, QCoreApplication::translate("WebsocketClient", "WebSocket Client"),
+        QCoreApplication::translate("WebsocketClient", "Server closed the connection"),
+        QMessageBox::Ok);
   }
 
   if (_closing)
@@ -374,7 +379,8 @@ void WebsocketClient::onDisconnected()
 void WebsocketClient::onError(QAbstractSocket::SocketError)
 {
   // Show Qt socket error string
-  QMessageBox::warning(nullptr, "WebSocket Client", _socket.errorString(), QMessageBox::Ok);
+  QMessageBox::warning(nullptr, QCoreApplication::translate("WebsocketClient", "WebSocket Client"),
+                       _socket.errorString(), QMessageBox::Ok);
   onDisconnected();
 }
 
@@ -423,7 +429,9 @@ void WebsocketClient::onTextMessageReceived(const QString& message)
     _pending_mode = WsState::Mode::Close;
 
     const auto msg = obj.value("message").toString("Unknown error");
-    QMessageBox::warning(nullptr, "WebSocket Client", msg, QMessageBox::Ok);
+    QMessageBox::warning(nullptr,
+                         QCoreApplication::translate("WebsocketClient", "WebSocket Client"), msg,
+                         QMessageBox::Ok);
     return;
   }
 
@@ -760,8 +768,9 @@ void WebsocketClient::createParsersForTopics()
       if (warned.insert(t.schema_encoding).second)
       {
         QMessageBox::warning(
-            nullptr, "Encoding problem",
-            QString("No parser available for encoding [%0]").arg(t.schema_encoding));
+            nullptr, QCoreApplication::translate("WebsocketClient", "Encoding problem"),
+            QCoreApplication::translate("WebsocketClient", "No parser available for encoding [%0]")
+                .arg(t.schema_encoding));
       }
       continue;
     }

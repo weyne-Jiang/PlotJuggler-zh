@@ -5,6 +5,7 @@
  */
 
 #include <QAction>
+#include <QCoreApplication>
 #include <QActionGroup>
 #include <QApplication>
 #include <QDebug>
@@ -149,14 +150,15 @@ void PlotWidget::buildActions()
 {
   QIcon iconDeleteList;
 
-  _action_edit = new QAction("&Edit curves...", this);
+  _action_edit = new QAction(QCoreApplication::translate("PlotWidget", "&Edit curves..."), this);
   connect(_action_edit, &QAction::triggered, this, [this]() {
     auto editor_dialog = new PlotwidgetEditor(this, qwtPlot());
     editor_dialog->exec();
     editor_dialog->deleteLater();
   });
 
-  _action_formula = new QAction("&Apply filter to data...", this);
+  _action_formula =
+      new QAction(QCoreApplication::translate("PlotWidget", "&Apply filter to data..."), this);
   connect(_action_formula, &QAction::triggered, this, [this]() {
     auto editor_dialog = new DialogTransformEditor(this);
     int res = editor_dialog->exec();
@@ -167,31 +169,37 @@ void PlotWidget::buildActions()
     }
   });
 
-  _action_split_horizontal = new QAction("&Split Horizontally", this);
+  _action_split_horizontal =
+      new QAction(QCoreApplication::translate("PlotWidget", "&Split Horizontally"), this);
   connect(_action_split_horizontal, &QAction::triggered, this, &PlotWidget::splitHorizontal);
 
-  _action_split_vertical = new QAction("&Split Vertically", this);
+  _action_split_vertical =
+      new QAction(QCoreApplication::translate("PlotWidget", "&Split Vertically"), this);
   connect(_action_split_vertical, &QAction::triggered, this, &PlotWidget::splitVertical);
 
-  _action_removeAllCurves = new QAction("&Remove ALL curves", this);
+  _action_removeAllCurves =
+      new QAction(QCoreApplication::translate("PlotWidget", "&Remove ALL curves"), this);
   connect(_action_removeAllCurves, &QAction::triggered, this, &PlotWidget::removeAllCurves);
   connect(_action_removeAllCurves, &QAction::triggered, this, &PlotWidget::undoableChange);
 
-  _action_zoomOutMaximum = new QAction("&Zoom Out", this);
+  _action_zoomOutMaximum =
+      new QAction(QCoreApplication::translate("PlotWidget", "&Zoom Out"), this);
   connect(_action_zoomOutMaximum, &QAction::triggered, this, [this]() {
     zoomOut(true);
     replot();
     emit undoableChange();
   });
 
-  _action_zoomOutHorizontally = new QAction("&Zoom Out Horizontally", this);
+  _action_zoomOutHorizontally =
+      new QAction(QCoreApplication::translate("PlotWidget", "&Zoom Out Horizontally"), this);
   connect(_action_zoomOutHorizontally, &QAction::triggered, this, [this]() {
     on_zoomOutHorizontal_triggered(true);
     replot();
     emit undoableChange();
   });
 
-  _action_zoomOutVertically = new QAction("&Zoom Out Vertically", this);
+  _action_zoomOutVertically =
+      new QAction(QCoreApplication::translate("PlotWidget", "&Zoom Out Vertically"), this);
   connect(_action_zoomOutVertically, &QAction::triggered, this, [this]() {
     on_zoomOutVertical_triggered(true);
     replot();
@@ -201,27 +209,30 @@ void PlotWidget::buildActions()
   QFont font;
   font.setPointSize(10);
 
-  _action_saveToFile = new QAction("&Save plot to file", this);
+  _action_saveToFile =
+      new QAction(QCoreApplication::translate("PlotWidget", "&Save plot to file"), this);
   connect(_action_saveToFile, &QAction::triggered, this, &PlotWidget::on_savePlotToFile);
 
-  _action_copy = new QAction("&Copy", this);
+  _action_copy = new QAction(QCoreApplication::translate("PlotWidget", "&Copy"), this);
   connect(_action_copy, &QAction::triggered, this, &PlotWidget::on_copyAction_triggered);
 
-  _action_paste = new QAction("&Paste", this);
+  _action_paste = new QAction(QCoreApplication::translate("PlotWidget", "&Paste"), this);
   connect(_action_paste, &QAction::triggered, this, &PlotWidget::on_pasteAction_triggered);
 
-  _action_image_to_clipboard = new QAction("&Copy image to clipboard", this);
+  _action_image_to_clipboard =
+      new QAction(QCoreApplication::translate("PlotWidget", "&Copy image to clipboard"), this);
   connect(_action_image_to_clipboard, &QAction::triggered, this, &PlotWidget::on_copyToClipboard);
 
-  _flip_x = new QAction("&Flip Horizontal Axis", this);
+  _flip_x = new QAction(QCoreApplication::translate("PlotWidget", "&Flip Horizontal Axis"), this);
   _flip_x->setCheckable(true);
   connect(_flip_x, &QAction::changed, this, &PlotWidget::onFlipAxis);
 
-  _flip_y = new QAction("&Flip Vertical Axis", this);
+  _flip_y = new QAction(QCoreApplication::translate("PlotWidget", "&Flip Vertical Axis"), this);
   _flip_y->setCheckable(true);
   connect(_flip_y, &QAction::changed, this, &PlotWidget::onFlipAxis);
 
-  _action_data_statistics = new QAction("&Show data statistics", this);
+  _action_data_statistics =
+      new QAction(QCoreApplication::translate("PlotWidget", "&Show data statistics"), this);
   connect(_action_data_statistics, &QAction::triggered, this, &PlotWidget::onShowDataStatistics);
 }
 
@@ -314,11 +325,12 @@ PlotWidget::CurveInfo* PlotWidget::addCurveXY(std::string name_x, std::string na
 
     if (name.empty() || curve_it)
     {
-      int ret =
-          QMessageBox::warning(qwtPlot(), "Missing name",
-                               "The name of the curve is missing or exist already. "
-                               "Try again or abort.",
-                               QMessageBox::Abort | QMessageBox::Retry, QMessageBox::NoButton);
+      int ret = QMessageBox::warning(
+          qwtPlot(), QCoreApplication::translate("PlotWidget", "Missing name"),
+          QCoreApplication::translate("PlotWidget",
+                                      "The name of the curve is missing or exist already. "
+                                      "Try again or abort."),
+          QMessageBox::Abort | QMessageBox::Retry, QMessageBox::NoButton);
       if (ret == QMessageBox::Abort || ret == QMessageBox::NoButton)
       {
         return nullptr;
@@ -360,7 +372,8 @@ PlotWidget::CurveInfo* PlotWidget::addCurveXY(std::string name_x, std::string na
   }
   catch (std::exception& ex)
   {
-    QMessageBox::warning(qwtPlot(), "Exception!", ex.what());
+    QMessageBox::warning(qwtPlot(), QCoreApplication::translate("PlotWidget", "Exception!"),
+                         ex.what());
     return nullptr;
   }
 
@@ -548,9 +561,11 @@ void PlotWidget::onDropEvent(QDropEvent*)
     {
       _dragging.mode = DragInfo::NONE;
       _dragging.curves.clear();
-      QMessageBox::warning(qwtPlot(), "Warning",
-                           "You can not drag XY (scatter) data and timeseries into the "
-                           "same plot");
+      QMessageBox::warning(
+          qwtPlot(), QCoreApplication::translate("PlotWidget", "Warning"),
+          QCoreApplication::translate("PlotWidget",
+                                      "You can not drag XY (scatter) data and timeseries into the "
+                                      "same plot"));
       return;
     }
 
@@ -562,14 +577,14 @@ void PlotWidget::onDropEvent(QDropEvent*)
 
     if (isXYPlot() && !scatter_curves)
     {
-      QMessageBox::warning(qwtPlot(), "Warning",
+      QMessageBox::warning(qwtPlot(), QCoreApplication::translate("PlotWidget", "Warning"),
                            tr("This is a [XY plot], you can not drop a timeseries here.\n"
                               "To convert this widget into a [timeseries plot], "
                               "you must first remove all its curves."));
     }
     if (!isXYPlot() && scatter_curves)
     {
-      QMessageBox::warning(qwtPlot(), "Warning",
+      QMessageBox::warning(qwtPlot(), QCoreApplication::translate("PlotWidget", "Warning"),
                            tr("This is a [timeseries plot], you can not "
                               "drop XY scatter data here.\n"
                               "To convert this widget into a [XY plot], "
@@ -595,7 +610,7 @@ void PlotWidget::onDropEvent(QDropEvent*)
     {
       _dragging.mode = DragInfo::NONE;
       _dragging.curves.clear();
-      QMessageBox::warning(qwtPlot(), "Warning",
+      QMessageBox::warning(qwtPlot(), QCoreApplication::translate("PlotWidget", "Warning"),
                            tr("This is a [timeseries plot], you can not "
                               "drop XY scatter data here.\n"
                               "To convert this widget into a [XY plot], "
@@ -838,7 +853,7 @@ bool PlotWidget::xmlLoadState(QDomElement& plot_widget, bool autozoom)
           if (!ts->setTransform(transform_el.attribute("name")) || !ts->transform())
           {
             QMessageBox::warning(
-                qwtPlot(), "Warning",
+                qwtPlot(), QCoreApplication::translate("PlotWidget", "Warning"),
                 tr("Can't restore the transform for curve [%1].\n"
                    "Transform [%2] not found.\nAre you using an old configuration file?")
                     .arg(curve_name, transform_el.attribute("name")));
@@ -879,7 +894,7 @@ bool PlotWidget::xmlLoadState(QDomElement& plot_widget, bool autozoom)
 
   if (missing_curves.size() > 0 && !warning_message_shown)
   {
-    QMessageBox::warning(qwtPlot(), "Warning",
+    QMessageBox::warning(qwtPlot(), QCoreApplication::translate("PlotWidget", "Warning"),
                          tr("Can't find one or more curves.\n"
                             "This message will be shown only once.\n%1")
                              .arg(missing_curves.join(",\n")));
@@ -944,7 +959,7 @@ bool PlotWidget::xmlLoadState(QDomElement& plot_widget, bool autozoom)
     auto plot_it = datamap().numeric.find(bg_data.toStdString());
     if (plot_it == datamap().numeric.end())
     {
-      QMessageBox::warning(qwtPlot(), "Warning",
+      QMessageBox::warning(qwtPlot(), QCoreApplication::translate("PlotWidget", "Warning"),
                            tr("Can't restore the background color.\n"
                               "Series [%1] not found.")
                                .arg(bg_data));
@@ -954,7 +969,7 @@ bool PlotWidget::xmlLoadState(QDomElement& plot_widget, bool autozoom)
       auto color_it = ColorMapLibrary().find(bg_colormap);
       if (color_it == ColorMapLibrary().end())
       {
-        QMessageBox::warning(qwtPlot(), "Warning",
+        QMessageBox::warning(qwtPlot(), QCoreApplication::translate("PlotWidget", "Warning"),
                              tr("Can't restore the background color.\n"
                                 "ColorMap [%1] not found.")
                                  .arg(bg_colormap));
@@ -1617,7 +1632,8 @@ void PlotWidget::showPointValues(QPoint point)
         _show_point_marker->setValue(maybe_point.value());
         marker_point = maybe_point.value();
 
-        text = QString("<font color=%1>name: %2<br>time:%3<br>value: %4</font>")
+        text = QCoreApplication::translate("PlotWidget",
+                                           "<font color=%1>name: %2<br>time:%3<br>value: %4</font>")
                    .arg(curve->pen().color().name())
                    .arg(curve->title().text())
                    .arg(QString::number(maybe_point->x(), 'f', prec))
@@ -1838,11 +1854,12 @@ QwtSeriesWrapper* PlotWidget::createCurveXY(const PlotData* data_x, const PlotDa
     if (if_xy_plot_failed_show_dialog)
     {
       QMessageBox msgBox(qwtPlot());
-      msgBox.setWindowTitle("Warnings");
+      msgBox.setWindowTitle(QCoreApplication::translate("PlotWidget", "Warnings"));
       msgBox.setText(tr("The creation of the XY plot failed with the following "
                         "message:\n %1")
                          .arg(ex.what()));
-      msgBox.addButton("Continue", QMessageBox::AcceptRole);
+      msgBox.addButton(QCoreApplication::translate("PlotWidget", "Continue"),
+                       QMessageBox::AcceptRole);
       msgBox.exec();
     }
     throw std::runtime_error("Creation of XY plot failed");

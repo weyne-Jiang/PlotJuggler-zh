@@ -1,4 +1,5 @@
 #include "dataload_zcm.h"
+#include <QCoreApplication>
 
 #include <QDebug>
 #include <QFile>
@@ -77,7 +78,8 @@ static int processInputLog(const string& logpath,
     fseeko(inlog.getFilePtr(), 0, SEEK_SET);
 
     QProgressDialog progress_dialog;
-    progress_dialog.setLabelText("Loading... please wait");
+    progress_dialog.setLabelText(
+        QCoreApplication::translate("DataLoadZcm", "Loading... please wait"));
     progress_dialog.setWindowModality(Qt::ApplicationModal);
     progress_dialog.setRange(0, 100);
     progress_dialog.setAutoClose(true);
@@ -264,7 +266,8 @@ bool DataLoadZcm::readDataFromFile(FileLoadInfo* info, PlotDataMapRef& plot_data
   zcm::TypeDb types(_config_widget->getLibraries().toStdString());
   if (!types.good())
   {
-    QMessageBox::warning(nullptr, "Error", "Failed to load zcmtypes");
+    QMessageBox::warning(nullptr, QCoreApplication::translate("DataLoadZcm", "Error"),
+                         QCoreApplication::translate("DataLoadZcm", "Failed to load zcmtypes"));
     return false;
   }
 

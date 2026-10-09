@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 THE SOFTWARE.
 */
 #include "udp_server.h"
+#include <QCoreApplication>
 #include <QTextStream>
 #include <QFile>
 #include <QMessageBox>
@@ -42,7 +43,7 @@ public:
   {
     ui->setupUi(this);
     ui->lineEditPort->setValidator(new QIntValidator());
-    setWindowTitle("UDP Server");
+    setWindowTitle(QCoreApplication::translate("UDP_Server", "UDP Server"));
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);

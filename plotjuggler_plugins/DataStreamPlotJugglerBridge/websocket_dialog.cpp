@@ -1,4 +1,5 @@
 #include "websocket_dialog.h"
+#include <QCoreApplication>
 
 #include <QRegularExpressionValidator>
 #include <QScrollBar>
@@ -21,7 +22,7 @@ WebsocketDialog::WebsocketDialog(const WebsocketClientConfig& config)
   : QDialog(nullptr), ui(new Ui::WebSocketDialog)
 {
   ui->setupUi(this);
-  setWindowTitle("WebSocket Client");
+  setWindowTitle(QCoreApplication::translate("WebsocketDialog", "WebSocket Client"));
 
   ui->lineEditURL->setText(config.url);
   ui->lineEditURL->setValidator(
@@ -41,7 +42,7 @@ WebsocketDialog::WebsocketDialog(const WebsocketClientConfig& config)
   auto okBtn = ui->buttonBox->button(QDialogButtonBox::Ok);
   if (okBtn)
   {
-    okBtn->setText("Subscribe");
+    okBtn->setText(QCoreApplication::translate("WebsocketDialog", "Subscribe"));
     okBtn->setEnabled(false);
   }
 
@@ -231,7 +232,9 @@ void WebsocketDialog::setConnected(bool connected)
 {
   ui->buttonConnect->blockSignals(true);
   ui->buttonConnect->setChecked(connected);
-  ui->buttonConnect->setText(connected ? "Connected" : "Connect");
+  ui->buttonConnect->setText(connected ?
+                                 QCoreApplication::translate("WebsocketDialog", "Connected") :
+                                 QCoreApplication::translate("WebsocketDialog", "Connect"));
   ui->buttonConnect->blockSignals(false);
 
   ui->lineEditURL->setEnabled(!connected);

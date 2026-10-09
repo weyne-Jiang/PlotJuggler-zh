@@ -1,4 +1,5 @@
 #include "toolbox_ui.h"
+#include <QCoreApplication>
 #include "ui_toolbox_csv.h"
 #include "PlotJuggler/svg_util.h"
 
@@ -58,7 +59,7 @@ ToolBoxUI::ToolBoxUI()
   auto* corner = ui->tableWidget->findChild<QAbstractButton*>();
   if (corner)
   {
-    corner->setToolTip("Click to select all topics");
+    corner->setToolTip(QCoreApplication::translate("ToolBoxUI", "Click to select all topics"));
   }
 
   ui->tableWidget->setStyleSheet("QTableCornerButton::section {"
@@ -148,7 +149,8 @@ ToolBoxUI::ToolBoxUI()
       const QString default_name =
           QDir(last_dir).filePath(is_csv ? "export.csv" : "export.parquet");
 
-      QString filename = QFileDialog::getSaveFileName(_widget, "Export data", default_name, filter);
+      QString filename = QFileDialog::getSaveFileName(
+          _widget, QCoreApplication::translate("ToolBoxUI", "Export data"), default_name, filter);
       if (filename.isEmpty())
       {
         return;
@@ -163,8 +165,8 @@ ToolBoxUI::ToolBoxUI()
     }
     else
     {
-      QString dir_path =
-          QFileDialog::getExistingDirectory(_widget, "Select export directory", last_dir);
+      QString dir_path = QFileDialog::getExistingDirectory(
+          _widget, QCoreApplication::translate("ToolBoxUI", "Select export directory"), last_dir);
       if (dir_path.isEmpty())
       {
         return;

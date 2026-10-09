@@ -1,4 +1,5 @@
 #include "mqtt_dialog.h"
+#include <QCoreApplication>
 #include <QFileDialog>
 #include "PlotJuggler/svg_util.h"
 
@@ -114,8 +115,10 @@ MQTT_Dialog::MQTT_Dialog(MQTTClient::Ptr mosq_client)
 
   connect(_client.get(), &MQTTClient::disconnected, this, [this]() {
     onConnectionClosed();
-    QMessageBox::warning(this, "Connection Lost",
-                         "Client disconnected. Maybe a problem with authentication?");
+    QMessageBox::warning(
+        this, QCoreApplication::translate("MQTT_Dialog", "Connection Lost"),
+        QCoreApplication::translate("MQTT_Dialog",
+                                    "Client disconnected. Maybe a problem with authentication?"));
   });
 }
 
@@ -234,7 +237,8 @@ void MQTT_Dialog::onSelectionChanged()
 void MQTT_Dialog::changeConnectionState(bool connected)
 {
   ui->connectionFrame->setEnabled(!connected);
-  ui->buttonConnect->setText(connected ? "Disconnect" : "Connect");
+  ui->buttonConnect->setText(connected ? QCoreApplication::translate("MQTT_Dialog", "Disconnect") :
+                                         QCoreApplication::translate("MQTT_Dialog", "Connect"));
   ui->lineEditTopicFilter->setEnabled(!connected);
   ui->listWidget->setEnabled(connected);
 }
@@ -244,8 +248,9 @@ void MQTT_Dialog::onLoadServerCertificate()
   QSettings settings;
   QString directory = settings.value("MQTT_Dialog.loadDirectory", QDir::currentPath()).toString();
 
-  QString filename =
-      QFileDialog::getOpenFileName(this, "Select Server Certificate", directory, tr("CRT (*.crt)"));
+  QString filename = QFileDialog::getOpenFileName(
+      this, QCoreApplication::translate("MQTT_Dialog", "Select Server Certificate"), directory,
+      tr("CRT (*.crt)"));
 
   if (!filename.isEmpty())
   {
@@ -263,8 +268,9 @@ void MQTT_Dialog::onLoadClientCertificate()
   QSettings settings;
   QString directory = settings.value("MQTT_Dialog.loadDirectory", QDir::currentPath()).toString();
 
-  QString filename =
-      QFileDialog::getOpenFileName(this, "Select Client Certificate", directory, tr("CRT (*.crt)"));
+  QString filename = QFileDialog::getOpenFileName(
+      this, QCoreApplication::translate("MQTT_Dialog", "Select Client Certificate"), directory,
+      tr("CRT (*.crt)"));
 
   if (!filename.isEmpty())
   {
@@ -282,8 +288,9 @@ void MQTT_Dialog::onLoadPrivateKey()
   QSettings settings;
   QString directory = settings.value("MQTT_Dialog.loadDirectory", QDir::currentPath()).toString();
 
-  QString filename =
-      QFileDialog::getOpenFileName(this, "Select PrivateKey", directory, tr("Key (*.key)"));
+  QString filename = QFileDialog::getOpenFileName(
+      this, QCoreApplication::translate("MQTT_Dialog", "Select PrivateKey"), directory,
+      tr("Key (*.key)"));
 
   if (!filename.isEmpty())
   {

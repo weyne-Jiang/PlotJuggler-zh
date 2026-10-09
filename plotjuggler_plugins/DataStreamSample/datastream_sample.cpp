@@ -1,4 +1,5 @@
 #include "datastream_sample.h"
+#include <QCoreApplication>
 #include <QTextStream>
 #include <QFile>
 #include <QMessageBox>
@@ -16,8 +17,11 @@ DataStreamSample::DataStreamSample()
   _dummy_notification = new QAction(this);
 
   connect(_dummy_notification, &QAction::triggered, this, [this]() {
-    QMessageBox::warning(nullptr, "Dummy Notifications",
-                         QString("%1 notifications").arg(_notifications_count), QMessageBox::Ok);
+    QMessageBox::warning(nullptr,
+                         QCoreApplication::translate("DataStreamSample", "Dummy Notifications"),
+                         QCoreApplication::translate("DataStreamSample", "%1 notifications")
+                             .arg(_notifications_count),
+                         QMessageBox::Ok);
 
     if (_notifications_count > 0)
     {
