@@ -644,6 +644,7 @@ void MainWindow::initializeActions()
 
 void MainWindow::loadAllPlugins(QStringList command_line_plugin_folders)
 {
+  ui->menuCloudData->menuAction()->setVisible(false);
   QSettings settings;
   QStringList plugin_folders;
   QStringList builtin_folders;
@@ -852,6 +853,9 @@ void MainWindow::initializePlugins()
       _curvelist_widget->clearSelections();
     });
   }
+
+  // Cloud entries are provided by successfully loaded toolbox plugins.
+  ui->menuCloudData->menuAction()->setVisible(!ui->menuCloudData->isEmpty());
 
   if (!_plugin_manager.dataStreamers().empty())
   {
