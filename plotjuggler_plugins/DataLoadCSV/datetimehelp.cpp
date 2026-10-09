@@ -30,6 +30,11 @@ DateTimeHelp::DateTimeHelp(QDialog* parent)
 {
   ui->setupUi(this);
 
+  // The platform alternate-base palette may stay light under our dark stylesheet.
+  // Use the themed table background so every translated row remains readable.
+  ui->dateFormatTable->setAlternatingRowColors(false);
+  ui->timeFormatTable->setAlternatingRowColors(false);
+
   verticalResizeTableViewToContents(ui->dateFormatTable);
   verticalResizeTableViewToContents(ui->timeFormatTable);
 

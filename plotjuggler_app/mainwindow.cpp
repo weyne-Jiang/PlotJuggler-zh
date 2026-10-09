@@ -43,6 +43,7 @@
 #include <QXmlStreamReader>
 
 #include "mainwindow.h"
+#include "toolbox_display_name.h"
 #include "curvelist_panel.h"
 #include "tabbedplotwidget.h"
 #include "PlotJuggler/plotdata.h"
@@ -811,13 +812,14 @@ void MainWindow::initializePlugins()
 
     QAction* action = nullptr;
     const QString toolbox_name = QString::fromUtf8(toolbox->name());
+    const QString display_name = PJ::toolboxDisplayName(toolbox_name);
     if (isMosaicoToolbox(toolbox_name))
     {
-      action = ui->menuCloudData->addAction(toolbox_name);
+      action = ui->menuCloudData->addAction(display_name);
     }
     else
     {
-      action = ui->menuTools->addAction(toolbox_name);
+      action = ui->menuTools->addAction(display_name);
     }
 
     int new_index = ui->widgetStack->count();
@@ -3084,7 +3086,25 @@ void MainWindow::on_actionAbout_triggered()
   QFile fileBody(_skin_path + "/about_window_body.html");
   if (fileBody.open(QIODevice::ReadOnly))
   {
-    ui->bodyTextBrowser->setHtml(fileBody.readAll());
+    QString body = QString::fromUtf8(fileBody.readAll());
+    if (_skin_path == "://resources/skin")
+    {
+      const char* phrases[] = {
+        QT_TRANSLATE_NOOP("AboutDialog", "was built with love by"),
+        QT_TRANSLATE_NOOP("AboutDialog", ", see"),
+        QT_TRANSLATE_NOOP("AboutDialog", "The official GitHub repository is::"),
+        QT_TRANSLATE_NOOP("AboutDialog",
+                          "Use GitHub issues to report bugs and suggest new features."),
+        QT_TRANSLATE_NOOP(
+            "AboutDialog",
+            "If you need commercial support and custom development of new features, please contact met at:")
+      };
+      for (const char* phrase : phrases)
+      {
+        body.replace(QString::fromUtf8(phrase), QCoreApplication::translate("AboutDialog", phrase));
+      }
+    }
+    ui->bodyTextBrowser->setHtml(body);
   }
 
   dialog->setAttribute(Qt::WA_DeleteOnClose);

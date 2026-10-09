@@ -34,6 +34,31 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-weight:296;&quot;&gt;如需商业支持及定制功能开发，请联系： &lt;/span&gt;&lt;/p&gt;
 &lt;p align=&quot;center&quot; style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Sans Serif&apos;; font-weight:600; color:#f704f8;&quot;&gt;davide.faconti@gmail.com&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="+3093"/>
+        <source>was built with love by</source>
+        <translation>由</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>, see</source>
+        <translation>用心开发，详情请见</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>The official GitHub repository is::</source>
+        <translation>官方 GitHub 仓库：</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Use GitHub issues to report bugs and suggest new features.</source>
+        <translation>请通过 GitHub 的问题页面报告缺陷并提出功能建议。</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>If you need commercial support and custom development of new features, please contact met at:</source>
+        <translation>如需商业支持或定制开发新功能，请联系：</translation>
+    </message>
 </context>
 <context>
     <name>BinaryFilter</name>
@@ -2361,7 +2386,12 @@ p, li { white-space: pre-wrap; }
         <translation>函数预览：</translation>
     </message>
     <message>
-        <location line="+50"/>
+        <location line="+30"/>
+        <source>Ctrl+Click to select multiple</source>
+        <translation>按住 Ctrl 并单击可多选</translation>
+    </message>
+    <message>
+        <location line="+20"/>
         <source>Use</source>
         <translation>使用</translation>
     </message>
@@ -2698,7 +2728,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../mainwindow.cpp" line="+1712"/>
+        <location filename="../mainwindow.cpp" line="-1380"/>
         <source>Start</source>
         <translation>启动</translation>
     </message>
@@ -2905,7 +2935,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../mainwindow.cpp" line="+1818"/>
+        <location filename="../mainwindow.cpp" line="+1836"/>
         <source>Load StyleSheet</source>
         <translation>加载样式表</translation>
     </message>
@@ -2915,7 +2945,7 @@ p, li { white-space: pre-wrap; }
         <translation>颜色映射编辑器</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="-2409"/>
+        <location filename="../mainwindow.cpp" line="-2427"/>
         <source>One or more timeseries in the layout haven&apos;t been loaded yet
 What do you want to do?</source>
         <translation>布局中的部分时间序列尚未加载
@@ -2935,12 +2965,12 @@ What do you want to do?</source>
         <location line="-7"/>
         <location line="+348"/>
         <location line="+1547"/>
-        <location line="+181"/>
+        <location line="+199"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location line="-2513"/>
+        <location line="-2535"/>
         <source>Missing package [plotjuggler-ros]</source>
         <translation>缺少软件包 [plotjuggler-ros]</translation>
     </message>
@@ -2954,7 +2984,7 @@ sudo apt install ros-${ROS_DISTRO}-plotjuggler-ros</source>
 sudo apt install ros-${ROS_DISTRO}-plotjuggler-ros</translation>
     </message>
     <message>
-        <location line="+674"/>
+        <location line="+678"/>
         <source>State publishers stopped</source>
         <translation>状态发布器已停止</translation>
     </message>
@@ -3206,7 +3236,7 @@ This message will be shown only once.</source>
         <translation>版本：</translation>
     </message>
     <message>
-        <location line="+126"/>
+        <location line="+144"/>
         <source>No plugin was loaded to process a data file
 </source>
         <translation>未加载可处理数据文件的插件
@@ -3944,6 +3974,24 @@ i.e. the Datafile used or the Streaming Plugin loaded ?</source>
         <location line="+7"/>
         <source>(i.e., convert to standard deviation)</source>
         <translation>（即转换为标准差）</translation>
+    </message>
+</context>
+<context>
+    <name>NlohmannParserCreator</name>
+    <message>
+        <location filename="../nlohmann_parsers.h" line="+113"/>
+        <source>Timestamp field name:</source>
+        <translation>时间戳字段名：</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>e.g. timestamp, time, ts</source>
+        <translation>例如 timestamp、time、ts</translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>use field as timestamp if available</source>
+        <translation>存在字段时将其用作时间戳</translation>
     </message>
 </context>
 <context>
@@ -5121,6 +5169,82 @@ p, li { white-space: pre-wrap; }
         <location line="-44"/>
         <source>Everything is fine :)</source>
         <translation>一切正常 :)</translation>
+    </message>
+</context>
+<context>
+    <name>ToolboxMenu</name>
+    <message>
+        <location filename="../toolbox_display_name.h" line="+18"/>
+        <source>CSV/Parquet Exporter</source>
+        <translation>CSV/Parquet 导出器</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Fast Fourier Transform</source>
+        <translation>快速傅里叶变换</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Quaternion to RPY</source>
+        <translation>四元数转滚转/俯仰/偏航角</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Reactive Script Editor</source>
+        <translation>响应式脚本编辑器</translation>
+    </message>
+</context>
+<context>
+    <name>TransformMenu</name>
+    <message>
+        <location filename="../transform_display_name.h" line="+17"/>
+        <source>Absolute</source>
+        <translation>绝对值</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Binary Filter</source>
+        <translation>二值滤波器</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Derivative</source>
+        <translation>微分</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Integral</source>
+        <translation>积分</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Moving Average</source>
+        <translation>滑动平均</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Moving Root Mean Squared</source>
+        <translation>滑动均方根</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Moving Variance / Stdev</source>
+        <translation>滑动方差 / 标准差</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Outlier Removal</source>
+        <translation>异常值移除</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Samples Counter</source>
+        <translation>样本计数</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Scale/Offset</source>
+        <translation>缩放 / 偏移</translation>
     </message>
 </context>
 <context>

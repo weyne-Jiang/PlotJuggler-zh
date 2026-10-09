@@ -32,7 +32,7 @@
    <string>Support</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background: white</string>
+   <string notr="true">background: white; color: black;</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>

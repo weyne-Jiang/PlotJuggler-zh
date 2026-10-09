@@ -10,6 +10,7 @@
 #include "nlohmann/json.hpp"
 #include "PlotJuggler/messageparser_base.h"
 #include <QDebug>
+#include <QCoreApplication>
 #include <QSettings>
 
 using namespace PJ;
@@ -101,15 +102,20 @@ public:
   QCheckBoxClose(QString text) : QWidget()
   {
     checkbox = new QCheckBox(text, this);
+    checkbox->setMinimumWidth(checkbox->sizeHint().width());
     checkbox->setChecked(false);
 
     frame = new QFrame(this);
     frame->setFrameStyle(QFrame::StyledPanel | QFrame::Plain);
     frame->setVisible(false);
 
-    auto* label = new QLabel("Timestamp field name:", frame);
+    auto* label = new QLabel(
+        QCoreApplication::translate("NlohmannParserCreator", "Timestamp field name:"), frame);
     lineedit = new LineEdit(frame);
-    lineedit->setPlaceholderText("e.g. timestamp, time, ts");
+    lineedit->setPlaceholderText(
+        QCoreApplication::translate("NlohmannParserCreator", "e.g. timestamp, time, ts"));
+    lineedit->setMinimumWidth(
+        lineedit->fontMetrics().horizontalAdvance(lineedit->placeholderText()) + 20);
 
     auto* frameLayout = new QVBoxLayout(frame);
     frameLayout->setContentsMargins(8, 8, 8, 8);
@@ -155,7 +161,8 @@ public:
   NlohmannParserCreator(const char* encoding)
   {
     _encoding = encoding;
-    _checkbox_use_timestamp = new QCheckBoxClose("use field as timestamp if available");
+    _checkbox_use_timestamp = new QCheckBoxClose(QCoreApplication::translate(
+        "NlohmannParserCreator", "use field as timestamp if available"));
     loadSettings();
   }
 

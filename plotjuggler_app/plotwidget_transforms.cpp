@@ -5,6 +5,7 @@
  */
 
 #include "plotwidget_transforms.h"
+#include "transform_display_name.h"
 #include "ui_plotwidget_transforms.h"
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -47,7 +48,10 @@ DialogTransformEditor::DialogTransformEditor(PlotWidget* plotwidget)
 
   for (const auto& name : names)
   {
-    ui->listTransforms->addItem(QString::fromStdString(name));
+    const auto identifier = QString::fromStdString(name);
+    auto item = new QListWidgetItem(PJ::transformDisplayName(identifier));
+    item->setData(Qt::UserRole, identifier);
+    ui->listTransforms->addItem(item);
   }
 
   if (ui->listCurves->count() != 0)
@@ -130,7 +134,7 @@ void DialogTransformEditor::on_listCurves_itemSelectionChanged()
     {
       for (int row = 1; row < ui->listTransforms->count(); row++)
       {
-        if (ui->listTransforms->item(row)->text() == ts->transformName())
+        if (ui->listTransforms->item(row)->data(Qt::UserRole).toString() == ts->transformName())
         {
           transform_row = row;
           break;
@@ -174,8 +178,8 @@ void DialogTransformEditor::on_listTransforms_itemSelectionChanged()
 
   QSignalBlocker block(ui->lineEditAlias);
 
-  QString transform_ID = selected_transforms.front()->text();
-  if (transform_ID == ui->listTransforms->item(0)->text())
+  QString transform_ID = selected_transforms.front()->data(Qt::UserRole).toString();
+  if (selected_transforms.front() == ui->listTransforms->item(0))
   {
     transform_ID.clear();
   }
